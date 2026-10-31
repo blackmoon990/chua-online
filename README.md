@@ -1,13 +1,16 @@
 # Chùa Thanh Tịnh Online — bản nhiều người thật
 
-Trang chùa online nhiều người cùng lúc: chánh điện chung, đi dạo, ngồi đệm thiền,
-dâng hương, vái lạy, tọa thiền, thỉnh chuông, trò chuyện, Gieo Quẻ 100 quẻ,
-xem Bát Tự · Tử Vi, và cuốn thư chúc lành khi có người tặng quà TikTok.
+Trang chùa online nhiều người cùng lúc: chánh điện chung với 24 đệm thiền
+bố trí thoáng, đi dạo, ngồi đệm thiền, dâng hương, vái lạy, tọa thiền,
+thỉnh chuông, gõ mõ, trò chuyện nổi, Gieo Quẻ 100 quẻ kèm Luận Quẻ,
+xem Bát Tự · Tử Vi (lá số 12 cung rút gọn), Lịch Âm, Bia Công Đức,
+và cuốn thư chúc lành "Cầu Bình An" khi có người tặng quà TikTok.
 
 Chạy bằng **Node.js + Express + Socket.io** — cùng bộ sự kiện như trang mẫu
 (`move`, `meditate`, `ring_bell`, `offer_incense`, `bow`, `chat_message`,
 `set_profile`, `current_users`, `new_user`, `user_moved`, `user_left`),
-cộng thêm `tiktok_gift`.
+cộng thêm `tiktok_gift` và `merit_board` (Bia Công Đức: server tính điểm
+từ quà TikTok và gửi bảng xếp hạng tối đa 10 dòng xuống cho trang vẽ lại).
 
 ## Chạy trên máy của bạn
 
@@ -36,12 +39,22 @@ Lưu ý gói miễn phí của Render: app ngủ sau một lúc không có ai v�
 
 Khi có người tặng quà trong phòng live, chương trình cầu nối của bạn chỉ cần
 làm **1 trong 3 cách** sau (cách nào cũng được, nhiều quà đến cùng lúc sẽ
-hiện lần lượt, không mất lời chúc nào):
+hiện lần lượt, không mất lời chúc nào). Kèm thêm trường `wish` (lời cầu)
+thì trang hiện băng rôn hồi hướng và đọc tên + lời cầu bằng giọng nói;
+người mới vào chùa cũng được đọc tên chào mừng kèm một câu chúc bình an:
 
 **Cách 1 — Gửi qua Socket.io** (từ chương trình cầu nối):
 
 ```js
-socket.emit("tiktok_gift", { name: "Tên người tặng", gift: "Tên món quà" });
+socket.emit("tiktok_gift", { name: "Tên người tặng", gift: "Tên món quà", points: 99 });
+```
+
+Kèm `points` (hoặc `coins`/`xu`) để server cộng điểm lên Bia Công Đức;
+không có điểm thì mặc định cộng 10. Muốn gửi thẳng bảng đã tính sẵn:
+
+```js
+socket.emit("merit_board", { entries: [{ name: "Tên", points: 99 }] });
+// hoặc: POST /api/merit-board với cùng dữ liệu JSON
 ```
 
 **Cách 2 — Gọi API** (không cần giữ kết nối Socket.io):
@@ -70,7 +83,8 @@ window.hienLoiChucQuaTang({ ten: "Tên người tặng", qua: "Tên món quà" }
 | `offer_incense` | `{}` |
 | `bow` | `{}` |
 | `chat_message` | `{ text }` |
-| `tiktok_gift` | `{ name, gift }` (cũng nhận `{ ten, qua }`) |
+| `tiktok_gift` | `{ name, gift, points? }` (cũng nhận `{ ten, qua }`) |
+| `merit_board` | `{ entries: [{ name, points }] }` — bảng đã tính sẵn |
 
 | Sự kiện server → client | Nội dung |
 |---|---|
@@ -85,6 +99,7 @@ window.hienLoiChucQuaTang({ ten: "Tên người tặng", qua: "Tên món quà" }
 | `user_bowed` | `{ by, name }` |
 | `chat_message` | `{ id, name, gender, text, time }` |
 | `tiktok_gift` | `{ name, gift }` |
+| `merit_board` | `{ entries: [{ name, points }] }` — gửi ngay khi kết nối và mỗi khi điểm đổi |
 
 Kiểm tra nhanh server: `GET /health` và `GET /api/users`.
 
@@ -93,10 +108,19 @@ Kiểm tra nhanh server: `GET /health` và `GET /api/users`.
 Bản này xếp phẳng: mọi file đều nằm ở gốc repo, không có thư mục con nào,
 để bạn tải từng file lên GitHub bản web được.
 
+- **Nền chính điện:** file `hall-bg.jpg` — chính điện nhiều tượng Phật, bàn dâng hương đủ trái cây, hoa quả, tượng Hộ Pháp hai bên. Muốn đổi nền thì thay đúng file này bằng ảnh khác, giữ nguyên tên file.
 - **100 quẻ xăm:** mảng `QUE_TITLES`, `QUE_POEMS`, `QUE_MEANINGS` ở cuối
   file `index.html` (phần "Gieo Quẻ"). Sửa trực tiếp các dòng chữ đó.
-- **Nhạc thiền:** tự tổng hợp bằng Web Audio trong file `index.html`
-  (nền trầm, hợp âm trôi 18 giây, chuông bát mỗi 14 giây) — không cần file nhạc.
+- **Nhạc thiền:** hộp chọn có 6 kiểu: nhạc thiền thư giãn (YouTube),
+  Thiền tịnh tâm và Tụng kinh · gõ mõ (tổng hợp bằng Web Audio trong
+  file `index.html`), Chú Đại Bi 108 biến, Kinh Địa Tạng trọn bộ và
+  Kinh Dược Sư (phát qua trình phát YouTube chính thức, tự lặp lại;
+  nếu video bị chặn nhúng thì tự chuyển về Thiền tịnh tâm có sẵn).
+  ID video YouTube nằm trong đối tượng `MUSIC_YT` ở cuối file `index.html`.
+- **Lịch Âm:** công thức đổi dương → âm (múi giờ +7, có tháng nhuận)
+  nằm trong file `index.html` (phần "Lịch Âm"), đã kiểm chứng với các
+  ngày đã biết: Tết 2024/2025/2026, Trung thu 2024, các tháng nhuận
+  2/2023, 4/2020, 6/2025, 6/2017 và ngày 31/10/2026 = 22/9 âm lịch.
 - **Tên chùa / màu sắc:** sửa tiêu đề trong `index.html` và biến màu
   ở đầu khối `<style>`.
 - **Mã QR Hòm Công Đức:** file `donate-vietqr.png` (ngay ở gốc repo) — đây là ảnh

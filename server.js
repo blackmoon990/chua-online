@@ -2,7 +2,7 @@
 // Chạy: npm install && npm start  (mặc định cổng 3000, hoặc PORT do Render cấp)
 // Các sự kiện giữ đúng tên trang mẫu dùng: move, meditate, ring_bell,
 // offer_incense, bow, chat_message, set_profile, current_users, new_user,
-// user_moved, user_left — cộng thêm tiktok_gift cho cầu nối TikTok.
+// user_moved, user_left — cộng thêm tiktok_gift và merit_board cho cầu nối TikTok.
 const path = require("path");
 const express = require("express");
 const http = require("http");
@@ -23,8 +23,28 @@ app.get(["/", "/index.html"], (req, res) => {
 app.get("/assets/donate-vietqr.png", (req, res) => {
   res.sendFile(path.join(__dirname, "donate-vietqr.png"));
 });
+app.get("/hall-bg.jpg", (req, res) => {
+  res.sendFile(path.join(__dirname, "hall-bg.jpg"));
+});
 
 const users = new Map(); // socketId -> { id, name, gender, x, y, action, meditating }
+const meritBoard = new Map(); // name -> points
+
+function meritEntries() {
+  return [...meritBoard.entries()]
+    .map(([name, points]) => ({ name, points }))
+    .sort((a, b) => b.points - a.points)
+    .slice(0, 10);
+}
+function emitMeritBoard() {
+  io.emit("merit_board", { entries: meritEntries() });
+}
+function addMerit(name, points) {
+  const p = Number(points);
+  const add = Number.isFinite(p) && p > 0 ? Math.floor(p) : 10;
+  meritBoard.set(name, (meritBoard.get(name) || 0) + add);
+  emitMeritBoard();
+}
 
 function cleanName(v) {
   return String(v == null ? "" : v).trim().slice(0, 20);
@@ -59,8 +79,8 @@ app.get("/api/users", (req, res) => {
 });
 
 // Cầu nối TikTok không dùng Socket.io vẫn gửi được quà:
-// POST /api/tiktok-gift  { "name": "Tên người tặng", "gift": "Tên món quà" }
-// (cũng nhận { "ten": ..., "qua": ... })
+// POST /api/tiktok-gift  { "name": "Tên người tặng", "gift": "Tên món quà", "points": 10, "wish": "Lời cầu hồi hướng" }
+// (cũng nhận { "ten": ..., "qua": ... } và "coins"/"xu" làm điểm, "loi"/"nguyen"/"cau" làm lời cầu)
 app.post("/api/tiktok-gift", (req, res) => {
   const body = req.body || {};
   const name = cleanName(body.name || body.ten);
@@ -68,13 +88,33 @@ app.post("/api/tiktok-gift", (req, res) => {
   if (!name || !gift) {
     return res.status(400).json({ ok: false, error: "Thiếu name/gift" });
   }
-  io.emit("tiktok_gift", { name, gift });
+  const wish = String(body.wish || body.loi || body.nguyen || body.cau || body.prayer || "").trim().slice(0, 120);
+  io.emit("tiktok_gift", { name, gift, wish });
+  addMerit(name, body.points || body.coins || body.xu);
   res.json({ ok: true });
 });
 
+// Cầu nối gửi thẳng bảng xếp hạng đã tính sẵn:
+// POST /api/merit-board  { "entries": [{ "name": "...", "points": 99 }] }
+app.post("/api/merit-board", (req, res) => {
+  const entries = (req.body && req.body.entries) || [];
+  if (!Array.isArray(entries)) {
+    return res.status(400).json({ ok: false, error: "entries phải là mảng" });
+  }
+  meritBoard.clear();
+  entries.forEach((e) => {
+    const name = cleanName(e && e.name);
+    const points = Number(e && e.points);
+    if (name && Number.isFinite(points)) meritBoard.set(name, Math.floor(points));
+  });
+  emitMeritBoard();
+  res.json({ ok: true, entries: meritEntries() });
+});
+
 io.on("connection", (socket) => {
-  // Người mới vào: gửi ngay danh sách những người đang ở chùa.
+  // Người mới vào: gửi ngay danh sách những người đang ở chùa + Bia Công Đức.
   socket.emit("current_users", [...users.values()].map(publicUser));
+  socket.emit("merit_board", { entries: meritEntries() });
   broadcastCount();
 
   socket.on("set_profile", (data) => {
@@ -158,13 +198,28 @@ io.on("connection", (socket) => {
     });
   });
 
-  // Cầu nối TikTok gửi qua Socket.io: { name, gift } (cũng nhận ten/qua).
+  // Cầu nối TikTok gửi qua Socket.io: { name, gift, points?, wish? } (cũng nhận ten/qua, loi/nguyen/cau).
   socket.on("tiktok_gift", (data) => {
     const d = data || {};
     const name = cleanName(d.name || d.ten);
     const gift = String(d.gift || d.qua || "").trim().slice(0, 60);
     if (!name || !gift) return;
-    io.emit("tiktok_gift", { name, gift });
+    const wish = String(d.wish || d.loi || d.nguyen || d.cau || d.prayer || "").trim().slice(0, 120);
+    io.emit("tiktok_gift", { name, gift, wish });
+    addMerit(name, d.points || d.coins || d.xu);
+  });
+
+  // Cầu nối gửi thẳng bảng xếp hạng đã tính sẵn: { entries: [{ name, points }] }.
+  socket.on("merit_board", (data) => {
+    const entries = (data && data.entries) || [];
+    if (!Array.isArray(entries)) return;
+    meritBoard.clear();
+    entries.forEach((e) => {
+      const name = cleanName(e && e.name);
+      const points = Number(e && e.points);
+      if (name && Number.isFinite(points)) meritBoard.set(name, Math.floor(points));
+    });
+    emitMeritBoard();
   });
 
   socket.on("disconnect", () => {
