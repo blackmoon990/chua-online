@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chùa Thanh Tịnh Online</title>
+<style>
+:root{--gold:#c9a227;--wood:#5b3a1e;--cream:#f7efdd;--ink:#2b2118;--teal:#3f6f6a}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:#efe6d0;color:var(--ink)}
+header{background:linear-gradient(180deg,#6b4423,#4a2e15);color:#ffeec2;text-align:center;padding:26px 16px 20px}
+header h1{margin:0;font-size:clamp(26px,5vw,42px);letter-spacing:.5px}
+header p{margin:8px auto 0;max-width:760px;opacity:.92}
+main{max-width:980px;margin:0 auto;padding:0 14px 90px}
+section.card{background:#fffdf6;border:1px solid #e3d5b3;border-radius:14px;padding:18px;margin-top:18px;box-shadow:0 2px 10px rgba(90,60,20,.08)}
+h2{margin:0 0 8px;color:#5b3a1e}
+.muted{color:#7a6a52;font-size:14px}
+label{display:block;font-weight:600;margin:10px 0 4px}
+input[type=text],input[type=date],select{width:100%;padding:10px;border:1px solid #d8c89c;border-radius:9px;font-size:16px;background:#fff}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row>*{flex:1;min-width:140px}
+.gender{display:flex;gap:10px}
+.gender label{flex:1;border:1px solid #d8c89c;border-radius:10px;padding:11px;text-align:center;cursor:pointer;background:#fff}
+.gender input{accent-color:var(--gold)}
+button{cursor:pointer;border:0;border-radius:10px;padding:11px 16px;font-size:16px;font-weight:700;background:var(--gold);color:#2b2118}
+button.secondary{background:#e9dfc6}
+button:active{transform:translateY(1px)}
+.profile-line{background:#f3ead2;border-radius:10px;padding:10px 12px;margin-top:12px}
+/* Chánh điện */
+.breath{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin:6px 0 10px}
+.breath .big{font-size:22px;font-weight:700;color:#5b3a1e;min-width:110px}
+#medTimer{font-variant-numeric:tabular-nums;font-weight:700}
+input[type=range]{accent-color:var(--gold)}
+.hall{position:relative;width:100%;aspect-ratio:16/10;border-radius:14px;overflow:hidden;border:3px solid #7a5228;
+ background:linear-gradient(180deg,#f3d98b 0%,#e8c46a 22%,#b98a4e 23%,#8a5a2e 55%,#a9743a 56%,#c99a55 100%)}
+.hall .wall{position:absolute;inset:0 0 44% 0;background:radial-gradient(ellipse at 50% 0%,#fff3c4 0%,#f3d98b 55%,#e8c46a 100%)}
+.altar{position:absolute;left:50%;top:2%;transform:translateX(-50%);width:34%;text-align:center}
+.altar .halo{width:64px;height:64px;margin:0 auto;border-radius:50%;background:radial-gradient(circle,#fff8d0,#f2c94c 60%,rgba(242,201,76,0));box-shadow:0 0 30px 12px rgba(255,220,120,.75)}
+.altar svg{width:76px;height:76px;margin-top:-52px}
+.altar .base{height:14px;background:#7a5228;border-radius:6px;margin-top:-4px}
+.altar .name{font-weight:800;color:#6b4423;letter-spacing:2px;font-size:13px}
+.donate-box{position:absolute;top:3%;right:2%;z-index:6;background:#8b3a2a;color:#ffeec2;border:2px solid var(--gold);border-radius:10px;padding:7px 10px;font-size:12px;font-weight:700;box-shadow:0 3px 10px rgba(0,0,0,.3)}
+.qr-modal{position:fixed;inset:0;z-index:70;background:rgba(30,18,8,.65);display:none;align-items:center;justify-content:center;padding:16px}
+.qr-modal.open{display:flex}
+.qr-modal-card{background:#fffdf6;border:3px solid var(--gold);border-radius:14px;max-width:360px;width:100%;padding:20px;text-align:center}
+.qr-modal-card h3{margin:0 0 6px;color:#6b4423}
+.qr-modal-card img{width:auto;max-width:min(280px,80vw);max-height:60vh;border:1px solid #e3d5b3;border-radius:10px;background:#fff}
+.qr-modal-card .who{font-size:18px;font-weight:800;margin:8px 0 4px}
+.burner{position:absolute;left:50%;top:33%;transform:translateX(-50%);width:44px;text-align:center;z-index:3}
+.burner .pot{font-size:30px;filter:drop-shadow(0 3px 3px rgba(0,0,0,.3))}
+.smoke{position:absolute;left:50%;bottom:34px;width:8px;height:44px;opacity:0;pointer-events:none}
+.hall.smoking .smoke{opacity:.85;animation:smoke 3s ease-in-out infinite}
+.smoke i{position:absolute;bottom:0;left:0;width:8px;height:16px;border-radius:50%;background:rgba(255,255,255,.85);filter:blur(3px);animation:rise 3s ease-in infinite}
+.smoke i:nth-child(2){left:8px;animation-delay:1s}
+.smoke i:nth-child(3){left:-8px;animation-delay:2s}
+@keyframes rise{0%{transform:translateY(0) scale(.7);opacity:0}30%{opacity:.9}100%{transform:translateY(-38px) scale(1.5);opacity:0}}
+@keyframes smoke{0%,100%{transform:translateX(-50%)}50%{transform:translateX(-42%)}}
+.candles{position:absolute;top:30%;left:50%;transform:translateX(-50%);width:60%;display:flex;justify-content:space-between;font-size:22px;z-index:2}
+.aisle{position:absolute;left:46%;top:38%;width:8%;height:60%;background:rgba(255,244,200,.35);border-radius:8px;cursor:pointer;z-index:1}
+.cushion{position:absolute;width:9%;aspect-ratio:1;border-radius:50%;border:2px solid #8a5a2e;background:radial-gradient(circle at 35% 30%,#e2574c,#a83226 70%);color:#fff;font-size:11px;z-index:2;cursor:pointer;padding:0}
+.cushion small{display:block;font-size:9px;opacity:.9}
+.cushion.taken{background:radial-gradient(circle at 35% 30%,#9c8a6a,#6f5d43 70%)}
+.stage{position:absolute;inset:0;z-index:4;pointer-events:none}
+.char{position:absolute;transform:translate(-50%,-92%);transition:left .7s ease,top .7s ease;text-align:center;width:64px}
+.char .nametag{background:rgba(20,12,6,.78);color:#ffeec2;font-size:11px;line-height:1.25;padding:3px 6px;border-radius:8px;white-space:nowrap;display:inline-block;max-width:150px;overflow:hidden;text-overflow:ellipsis}
+.char .nametag .act{display:block;color:#ffd98a;font-size:10px}
+.char .bubble{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:#fff;border-radius:10px;padding:5px 8px;font-size:12px;max-width:150px;box-shadow:0 2px 8px rgba(0,0,0,.25);display:none;white-space:normal}
+.char .bubble.show{display:block}
+.char .fig{font-size:34px;line-height:1;filter:drop-shadow(0 4px 3px rgba(0,0,0,.3))}
+.char .robe{font-size:11px;font-weight:700}
+.char.nam .robe{color:#2f4f5e}.char.nu .robe{color:#7a3a6e}
+.char .halo2{position:absolute;left:50%;top:34px;transform:translateX(-50%);width:46px;height:46px;border-radius:50%;box-shadow:0 0 22px 10px rgba(255,210,90,.9);opacity:0;pointer-events:none}
+.char.meditating .halo2{opacity:1}
+.char.meditating .fig{filter:drop-shadow(0 0 10px gold)}
+.char.bowing .fig{display:inline-block;transform:rotate(28deg)}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.controls button{flex:1;min-width:120px}
+.status{margin-top:10px;font-size:14px}
+/* Cuốn thư chúc */
+.gift-scroll{position:fixed;left:50%;top:18%;transform:translate(-50%,-50%) scale(.9);z-index:60;width:min(480px,92vw);background:linear-gradient(180deg,#fff8dc,#f3dd9a);border:3px solid var(--gold);border-radius:12px;padding:20px;text-align:center;box-shadow:0 12px 40px rgba(0,0,0,.35);display:none}
+.gift-scroll.show{display:block;animation:pop .35s ease}
+@keyframes pop{from{transform:translate(-50%,-50%) scale(.8);opacity:0}to{transform:translate(-50%,-50%) scale(1);opacity:1}}
+.gift-scroll h3{margin:0 0 6px;color:#6b4423}
+.gift-scroll .who{font-size:20px;font-weight:800}
+/* Chat */
+#chatBtn{position:fixed;right:16px;bottom:16px;z-index:50;border-radius:999px;padding:13px 18px;box-shadow:0 6px 18px rgba(0,0,0,.3)}
+#chatPanel{position:fixed;right:16px;bottom:76px;z-index:50;width:min(360px,92vw);background:#fffdf6;border:1px solid #e3d5b3;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.25);display:none;overflow:hidden}
+#chatPanel.open{display:block}
+#chatPanel header{padding:12px 14px;text-align:left}
+#chatLog{height:260px;overflow:auto;padding:10px 12px}
+#chatLog p{margin:0 0 8px;font-size:14px}
+#chatLog b{color:#5b3a1e}
+#chatForm{display:flex;gap:6px;padding:8px;border-top:1px solid #eee}
+#chatForm input{flex:1}
+#chatForm button{padding:10px 12px}
+/* Gieo quẻ */
+.que-tube{font-size:64px;text-align:center}
+.que-tube.shaking{animation:shake .18s linear infinite}
+@keyframes shake{0%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}100%{transform:rotate(-6deg)}}
+.que-result{border:1px dashed var(--gold);border-radius:10px;padding:14px;margin-top:12px;background:#fffbe8}
+.que-result .num{font-size:13px;color:#7a6a52}
+.que-result h3{margin:4px 0}
+.que-result .poem{white-space:pre-line;font-style:italic}
+/* Bát tự */
+.pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.pillar{border:1px solid #e3d5b3;border-radius:10px;padding:10px;text-align:center;background:#fffbe8}
+.pillar .big{font-size:24px;font-weight:800}
+.bar{display:flex;align-items:center;gap:8px;margin:5px 0;font-size:14px}
+.bar .lbl{width:44px}
+.bar .track{flex:1;height:12px;background:#eee3c8;border-radius:6px;overflow:hidden}
+.bar .fill{height:100%;background:var(--teal)}
+footer{text-align:center;color:#7a6a52;font-size:13px;padding:26px 10px}
+@media (max-width:560px){.pillars{grid-template-columns:repeat(2,1fr)}.altar svg{width:58px;height:58px}.char{width:52px}.char .fig{font-size:27px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>🪷 Chùa Thanh Tịnh Online</h1>
+  <p>Chánh điện chung cho mọi người: cùng đi dạo, dâng hương, vái lạy, tọa thiền và nghe chuông trong thời gian thực.</p>
+</header>
+<main>
+
+<section class="card" id="gate">
+  <h2>🚪 Vào Chùa — Tự Đặt Tên Của Bạn</h2>
+  <p>Nhập tên bạn muốn hiển thị và chọn <b>Phật tử nam</b> hoặc <b>Phật tử nữ</b> trước khi vào chánh điện. Tên và giới tính sẽ hiện trên <b>bảng tên trên đầu nhân vật</b> của bạn — khi nối server, mọi người trong chùa cũng nhìn thấy đúng tên và giới tính đó của nhau.</p>
+  <label for="yourName">Tên của bạn khi vào chùa</label>
+  <input type="text" id="yourName" placeholder="Ví dụ: An Nhiên" maxlength="20" autocomplete="off">
+  <label>Bạn là Phật tử nam hay nữ?</label>
+  <div class="gender">
+    <label><input type="radio" name="gender" value="nam" checked> ♂ Phật tử nam</label>
+    <label><input type="radio" name="gender" value="nu"> ♀ Phật tử nữ</label>
+  </div>
+  <p class="muted" id="genderNote"><b>Phật tử nam:</b> áo lam xám xanh, tóc ngắn, dáng áo thẳng, vai rộng. <b>Phật tử nữ:</b> áo lam hồng tím, tóc dài búi cao cài hoa sen, dáng áo xòe như váy dài. <b>Bảng tên trên đầu:</b> hiện “♂ Tên — Phật tử nam” hoặc “♀ Tên — Phật tử nữ” kèm hành động đang làm.</p>
+  <div class="row" style="margin-top:10px">
+    <button id="enterBtn">Vào chánh điện</button>
+    <button class="secondary" id="changeNameBtn" hidden>Đổi tên / giới tính</button>
+  </div>
+  <div class="profile-line" id="profileLine" hidden></div>
+</section>
+
+<section class="card" id="connectCard">
+  <h2>🔗 Kết nối server chùa</h2>
+  <p class="muted">Trang này tự nối tới chính server đang chạy nó. Nếu bạn mở file này ở nơi khác, dán địa chỉ server (ví dụ <code>https://ten-app-cua-ban.onrender.com</code>) rồi bấm Kết nối.</p>
+  <div class="row">
+    <input type="text" id="serverUrl" placeholder="Để trống = dùng server hiện tại">
+    <button id="connectBtn" style="flex:0 0 auto">Kết nối</button>
+  </div>
+  <p class="status" id="connStatus">Chưa kết nối — bạn vẫn vào chánh điện, dâng hương, vái lạy, thiền và thỉnh chuông được một mình.</p>
+  <p class="status">Đang ở chùa: <b id="userCount">1</b> người</p>
+</section>
+
+<section class="card">
+  <h2>🛕 Chánh điện</h2>
+  <div class="breath">
+    <span class="big" id="breathText">Hít vào…</span>
+    <label style="margin:0">Âm lượng thiền <input type="range" id="vol" min="0" max="100" value="55"></label>
+    <span>Đã thiền <span id="medTimer">00:00</span></span>
+  </div>
+  <p class="muted">Kiểu <b>Thiền tịnh tâm</b> là nhạc chính khi vào chùa: không lời, không nhịp gõ dồn — chỉ có nền trầm rất nhẹ lên xuống theo nhịp thở khoảng 14 giây, hợp âm trôi chậm 18 giây và tiếng <b>chuông bát (singing bowl)</b> thưa, vang dài rồi tan dần. Hãy để âm lượng vừa đủ nghe, ngồi xuống đệm và thở theo nhạc.</p>
+  <div class="hall" id="hall" aria-label="Chánh điện">
+    <div class="wall"></div>
+    <button class="donate-box" id="donateBox" type="button">🙏 Hòm Công Đức<br><small>Ấn để mở mã QR</small></button>
+    <div class="altar">
+      <div class="halo"></div>
+      <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="26" r="11" fill="#e8b64c"/><path d="M50 38 C30 44 24 62 22 78 L78 78 C76 62 70 44 50 38Z" fill="#d99a2b"/><path d="M28 78 Q50 58 72 78Z" fill="#b97f1d"/><rect x="18" y="78" width="64" height="6" rx="3" fill="#7a5228"/></svg>
+      <div class="base"></div>
+      <div class="name">NAM MÔ A DI ĐÀ PHẬT</div>
+    </div>
+    <div class="candles"><span>🕯️</span><span>🕯️</span></div>
+    <div class="burner" id="burner"><div class="smoke"><i></i><i></i><i></i></div><div class="pot">🏺</div><div style="font-size:11px;color:#fff;text-shadow:0 1px 2px #000">Lư hương</div></div>
+    <div class="aisle" id="aisle" title="Chạm vào lối đi để đi dạo"></div>
+    <div class="stage" id="stage"></div>
+  </div>
+  <p class="muted"><b>Đi dạo:</b> chạm / nhấp vào lối đi giữa điện, hoặc dùng phím mũi tên. <b>Đệm thiền:</b> các bồ đoàn tròn trên tọa cụ, chia hai dãy trái — phải trước bàn thờ; chạm vào một đệm trống để tới ngồi thiền. <b>Dâng hương:</b> bước tới trước lư hương, nâng hương và khói bay lên bàn thờ. <b>Vái lạy:</b> quỳ xuống, cúi mình lạy ba lạy trước Phật. <b>Tọa thiền:</b> bước tới đệm thiền trống gần nhất, ngồi yên tỏa hào quang vàng. <b>Thỉnh chuông:</b> tiếng chuông vang cho mọi người đang ở chùa.</p>
+  <div class="controls">
+    <button id="walkBtn">🚶 Đi dạo</button>
+    <button id="sitBtn">🧘 Tọa thiền</button>
+    <button id="incenseBtn">🙏 Dâng hương</button>
+    <button id="bowBtn">🙇 Vái lạy</button>
+    <button id="bellBtn">🔔 Thỉnh chuông</button>
+  </div>
+  <p class="status" id="hallStatus">Hãy đặt tên ở cổng vào rồi bấm “Vào chánh điện”.</p>
+</section>
+
+<section class="card" id="queSection">
+  <h2>🎋 Gieo Quẻ Xin Lộc</h2>
+  <p>Tâm thành thì linh. Hãy lặng lòng nghĩ về một điều đang băn khoăn — công việc, gia đạo, sức khỏe hay tình duyên — rồi lắc ống quẻ để xin một quẻ đầu ngày. Mỗi lần gieo là một lời nhắc để sống chậm, sáng và thiện hơn.</p>
+  <div class="que-tube" id="queTube">🎋</div>
+  <p style="text-align:center" class="muted">Ống Quẻ · 100 quẻ xăm chùa</p>
+  <div style="text-align:center"><button id="drawQueBtn">Gieo Quẻ Ngay</button></div>
+  <div id="queResult"><h3>Chưa gieo quẻ</h3><p class="muted">Ấn <b>Gieo Quẻ Ngay</b>, ống quẻ sẽ lắc và rút ra một thẻ xăm dành riêng cho bạn trong lần vào chùa này.</p></div>
+  <p class="muted">Quẻ tốt nhắc ta giữ tâm thiện, quẻ chưa thuận nhắc ta kiên nhẫn và sửa mình — đó mới là ý nghĩa của việc xin quẻ ở chùa.</p>
+</section>
+
+<section class="card" id="batuSection">
+  <h2>🔮 Xem Bát Tự · Tử Vi</h2>
+  <p>Nhập ngày, giờ sinh để lập <b>Tứ Trụ (Năm – Tháng – Ngày – Giờ)</b>, xem Nạp Âm, Mệnh Ngũ Hành, cân bằng Ngũ Hành và an sao Tử Vi tại Mệnh Cung. Kết quả tính theo Can Chi lịch vạn niên rút gọn, dùng để tham khảo và chiêm nghiệm.</p>
+  <div class="row">
+    <div><label for="bdDate">Ngày sinh (dương lịch)</label><input type="date" id="bdDate"></div>
+    <div><label for="bdHour">Giờ sinh</label>
+      <select id="bdHour">
+        <option value="">Không rõ giờ sinh</option>
+        <option value="0">Tý — 23h đến 1h</option><option value="1">Sửu — 1h đến 3h</option>
+        <option value="2">Dần — 3h đến 5h</option><option value="3">Mão — 5h đến 7h</option>
+        <option value="4">Thìn — 7h đến 9h</option><option value="5">Tỵ — 9h đến 11h</option>
+        <option value="6">Ngọ — 11h đến 13h</option><option value="7">Mùi — 13h đến 15h</option>
+        <option value="8">Thân — 15h đến 17h</option><option value="9">Dậu — 17h đến 19h</option>
+        <option value="10">Tuất — 19h đến 21h</option><option value="11">Hợi — 21h đến 23h</option>
+      </select>
+    </div>
+  </div>
+  <div style="margin-top:12px"><button id="batuBtn">Lập lá số</button></div>
+  <div id="batuResult"></div>
+  <p class="muted">Lưu ý: Bát Tự và Tử Vi trong mục này được lập tự động bằng công thức rút gọn trên trình duyệt, không lưu lại thông tin bạn nhập. Kết quả chỉ mang tính tham khảo văn hóa – tâm linh, không phải phán quyết về vận mệnh. Điều quan trọng nhất vẫn là tâm thiện, hành thiện và nỗ lực mỗi ngày.</p>
+</section>
+
+</main>
+<footer>Chùa Thanh Tịnh Online · Nguyện cho mọi người thân tâm an lạc. 🙏</footer>
+
+<div class="gift-scroll" id="giftScroll" role="status">
+  <div>🪷 📜 🪷</div>
+  <h3>Cuốn thư chúc lành</h3>
+  <p class="who" id="giftWho"></p>
+  <p id="giftText"></p>
+  <p class="muted">Cả chùa cùng chung vui và hồi hướng công đức lành. 🙏</p>
+</div>
+
+<button id="chatBtn">💬 Trò chuyện</button>
+<div id="chatPanel">
+  <header>💬 Trò chuyện trong chùa <span id="chatCount"></span></header>
+  <div id="chatLog"><p class="muted">Chào bạn. Tin nhắn ở đây hiện cho mọi người đang ở chùa, và hiện thành bong bóng thoại trên đầu nhân vật.</p></div>
+  <form id="chatForm"><input type="text" id="chatInput" placeholder="Gõ lời chào, lời chúc…" maxlength="200" autocomplete="off"><button type="submit">Gửi</button></form>
+</div>
+
+<div class="qr-modal" id="qrModal" role="dialog" aria-label="Mã QR Hòm Công Đức">
+  <div class="qr-modal-card">
+    <h3>🙏 Hòm Công Đức</h3>
+    <img src="assets/donate-vietqr.png" alt="Mã QR VietQR cúng dường">
+    <p class="who">NHU VAN DAT</p>
+    <p class="muted">Quét mã QR để cúng dường tùy tâm. Xin tri ân công đức của quý Phật tử. 🙏</p>
+    <button id="qrCloseBtn">Đóng</button>
+  </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+"use strict";
+/* ============ Tiện ích ============ */
+const $ = (id) => document.getElementById(id);
+const CAN = ["Giáp","Ất","Bính","Đinh","Mậu","Kỷ","Canh","Tân","Nhâm","Quý"];
+const CHI = ["Tý","Sửu","Dần","Mão","Thìn","Tỵ","Ngọ","Mùi","Thân","Dậu","Tuất","Hợi"];
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+/* ============ Âm thanh thiền (Web Audio, tự tổng hợp) ============ */
+let audioCtx = null, masterGain = null, droneNodes = [], bowlTimer = null, chordTimer = null;
+function ensureAudio() {
+  if (audioCtx) { if (audioCtx.state === "suspended") audioCtx.resume(); return; }
+  const AC = window.AudioContext || window.webkitAudioContext;
+  if (!AC) return;
+  audioCtx = new AC();
+  masterGain = audioCtx.createGain();
+  masterGain.gain.value = ($("vol").value / 100) * 0.35;
+  masterGain.connect(audioCtx.destination);
+  startDrone();
+  chordTimer = setInterval(playChord, 18000); playChord();
+  bowlTimer = setInterval(() => playBowl(0.5), 14000);
+  setTimeout(() => playBowl(0.35), 3000);
+}
+function startDrone() {
+  [108, 162.2].forEach((f, i) => {
+    const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+    o.type = "sine"; o.frequency.value = f; g.gain.value = i === 0 ? 0.16 : 0.07;
+    o.connect(g); g.connect(masterGain); o.start(); droneNodes.push(o);
+    const lfo = audioCtx.createOscillator(), lg = audioCtx.createGain();
+    lfo.frequency.value = 1 / 14; lg.gain.value = 0.04;
+    lfo.connect(lg); lg.connect(g.gain); lfo.start();
+  });
+}
+const CHORDS = [[220, 277.2, 329.6], [196, 246.9, 293.7], [174.6, 220, 261.6], [196, 246.9, 329.6]];
+let chordIdx = 0;
+function playChord() {
+  if (!audioCtx) return;
+  const t = audioCtx.currentTime, notes = CHORDS[chordIdx++ % CHORDS.length];
+  notes.forEach((f) => {
+    const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+    o.type = "triangle"; o.frequency.value = f;
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(0.05, t + 4);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 17);
+    o.connect(g); g.connect(masterGain); o.start(t); o.stop(t + 17.5);
+  });
+}
+function playBowl(vol) {
+  if (!audioCtx) return;
+  const t = audioCtx.currentTime;
+  [256, 512.7, 768.4, 1023.5].forEach((f, i) => {
+    const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+    o.type = "sine"; o.frequency.value = f;
+    const amp = vol * [0.22, 0.12, 0.06, 0.03][i];
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(amp, t + 0.05);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 9);
+    o.connect(g); g.connect(masterGain); o.start(t); o.stop(t + 9.5);
+  });
+}
+$("vol").addEventListener("input", (e) => { if (masterGain) masterGain.gain.value = (e.target.value / 100) * 0.35; });
+
+/* Nhịp thở 14 giây */
+let inhale = true;
+setInterval(() => { inhale = !inhale; $("breathText").textContent = inhale ? "Hít vào…" : "Thở ra…"; }, 7000);
+
+/* ============ Nhân vật trong chánh điện ============ */
+const stage = $("stage"), hall = $("hall");
+const SEATS = [
+  {x:16,y:52},{x:16,y:66},{x:16,y:80},{x:30,y:52},{x:30,y:66},{x:30,y:80},
+  {x:70,y:52},{x:70,y:66},{x:70,y:80},{x:84,y:52},{x:84,y:66},{x:84,y:80},
+];
+SEATS.forEach((s, i) => {
+  const b = document.createElement("button");
+  b.className = "cushion"; b.type = "button"; b.dataset.seat = i;
+  b.style.left = (s.x - 4.5) + "%"; b.style.top = (s.y - 4.5) + "%";
+  b.innerHTML = "🧘<small>Đệm " + (i + 1) + "</small>";
+  b.title = "Chạm để tới ngồi thiền ở đệm " + (i + 1);
+  b.addEventListener("click", (e) => { e.stopPropagation(); sitOnSeat(i); });
+  hall.appendChild(b);
+});
+const chars = new Map(); // id -> {el, bubble, tag, data}
+function avatarFor(gender) {
+  return gender === "nu"
+    ? { face: "👩", robe: "Áo lam hồng tím · búi cao cài hoa sen" }
+    : { face: "👨", robe: "Áo lam xám xanh · tóc ngắn" };
+}
+function renderChar(u) {
+  let c = chars.get(u.id);
+  if (!c) {
+    const el = document.createElement("div");
+    el.className = "char " + (u.gender === "nu" ? "nu" : "nam");
+    el.innerHTML = '<div class="bubble"></div><div class="halo2"></div><span class="nametag"></span><div class="fig"></div><div class="robe"></div>';
+    stage.appendChild(el);
+    c = { el, bubble: el.querySelector(".bubble"), tag: el.querySelector(".nametag") };
+    chars.set(u.id, c);
+  }
+  const av = avatarFor(u.gender);
+  c.el.className = "char " + (u.gender === "nu" ? "nu" : "nam") + (u.meditating ? " meditating" : "");
+  c.el.querySelector(".fig").textContent = u.meditating ? "🧘" : av.face;
+  c.el.querySelector(".robe").textContent = u.gender === "nu" ? "🪷" : "";
+  c.el.style.left = u.x + "%"; c.el.style.top = u.y + "%";
+  const sym = u.gender === "nu" ? "♀" : "♂";
+  const role = u.gender === "nu" ? "Phật tử nữ" : "Phật tử nam";
+  c.tag.innerHTML = esc(sym + " " + u.name + " — " + role) + '<span class="act">' + esc(u.action || "đang đứng") + "</span>";
+  c.data = u;
+  return c;
+}
+function removeChar(id) {
+  const c = chars.get(id); if (c) { c.el.remove(); chars.delete(id); }
+}
+function showBubble(id, text) {
+  const c = chars.get(id); if (!c) return;
+  c.bubble.textContent = text; c.bubble.classList.add("show");
+  clearTimeout(c.bubbleTimer);
+  c.bubbleTimer = setTimeout(() => c.bubble.classList.remove("show"), 5000);
+}
+function refreshSeatTaken() {
+  const taken = new Set([...chars.values()].map((c) => c.data && c.data.seat).filter((v) => v != null));
+  document.querySelectorAll(".cushion").forEach((b) => {
+    b.classList.toggle("taken", taken.has(Number(b.dataset.seat)));
+  });
+}
+
+/* ============ Trạng thái của mình ============ */
+let me = null;           // {name, gender}
+let myId = null;
+let myPos = { x: 50, y: 82 };
+let mySeat = null;
+let meditating = false, medSeconds = 0, medTimerId = null;
+let socket = null, connected = false;
+
+function setProfileLine() {
+  if (!me) return;
+  const sym = me.gender === "nu" ? "♀" : "♂";
+  const role = me.gender === "nu" ? "Phật tử nữ" : "Phật tử nam";
+  $("profileLine").hidden = false;
+  $("profileLine").innerHTML = "Bạn đang ở chùa với bảng tên: <b>" + esc(sym + " " + me.name + " — " + role) + "</b>";
+}
+function enterTemple() {
+  const name = $("yourName").value.trim();
+  if (!name) { alert("Bạn hãy nhập tên trước khi vào chùa nhé."); $("yourName").focus(); return; }
+  const gender = document.querySelector('input[name="gender"]:checked').value;
+  me = { name, gender };
+  setProfileLine();
+  $("changeNameBtn").hidden = false;
+  $("enterBtn").textContent = "Đã vào chùa ✓";
+  ensureAudio();
+  myPos = { x: 50, y: 82 }; mySeat = null; meditating = false;
+  if (socket && connected) socket.emit("set_profile", { name, gender });
+  renderMe("đang đứng");
+  $("hallStatus").textContent = "Chào " + name + ". Chạm vào lối đi để đi dạo, hoặc chạm một đệm trống để ngồi thiền.";
+  document.querySelector(".hall").scrollIntoView({ behavior: "smooth", block: "center" });
+}
+function renderMe(action) {
+  if (!me) return;
+  const id = myId || "me";
+  renderChar({ id, name: me.name, gender: me.gender, x: myPos.x, y: myPos.y, action, meditating, seat: mySeat });
+  refreshSeatTaken();
+}
+function emitMove(action) {
+  if (socket && connected) socket.emit("move", { x: myPos.x, y: myPos.y, action, meditating });
+}
+function moveTo(x, y, action) {
+  if (!me) { $("gate").scrollIntoView({ behavior: "smooth" }); alert("Bạn hãy đặt tên ở cổng vào trước nhé."); return; }
+  if (meditating) stopMeditating();
+  mySeat = null;
+  myPos = { x: Math.max(4, Math.min(96, x)), y: Math.max(40, Math.min(94, y)) };
+  renderMe(action || "đang đi dạo");
+  emitMove(action || "đang đi dạo");
+}
+function sitOnSeat(i) {
+  if (!me) { $("gate").scrollIntoView({ behavior: "smooth" }); alert("Bạn hãy đặt tên ở cổng vào trước nhé."); return; }
+  const taken = [...chars.values()].some((c) => c.data && c.data.id !== myId && c.data.seat === i);
+  if (taken) { $("hallStatus").textContent = "Đệm " + (i + 1) + " đã có người ngồi. Bạn chọn đệm trống khác nhé."; return; }
+  mySeat = i; myPos = { x: SEATS[i].x, y: SEATS[i].y };
+  startMeditating();
+}
+function startMeditating() {
+  meditating = true;
+  renderMe("đang tọa thiền");
+  emitMove("đang tọa thiền");
+  if (socket && connected) socket.emit("meditate", { meditating: true });
+  $("hallStatus").textContent = "Bạn đang tọa thiền. Hít vào… thở ra… theo nhạc. Bấm “Đi dạo” hoặc chạm lối đi để đứng dậy.";
+  if (!medTimerId) medTimerId = setInterval(() => {
+    medSeconds++;
+    const m = String(Math.floor(medSeconds / 60)).padStart(2, "0"), s = String(medSeconds % 60).padStart(2, "0");
+    $("medTimer").textContent = m + ":" + s;
+  }, 1000);
+}
+function stopMeditating() {
+  if (!meditating) return;
+  meditating = false;
+  if (socket && connected) socket.emit("meditate", { meditating: false });
+  renderMe("đang đứng"); emitMove("đang đứng");
+}
+$("enterBtn").addEventListener("click", enterTemple);
+$("changeNameBtn").addEventListener("click", () => { $("enterBtn").textContent = "Vào chánh điện"; $("gate").scrollIntoView({ behavior: "smooth" }); $("yourName").focus(); });
+$("aisle").addEventListener("click", () => {
+  if (!me) { enterTemple(); return; }
+  moveTo(46 + Math.random() * 8, 62 + Math.random() * 26, "đang đi dạo");
+});
+hall.addEventListener("click", (e) => {
+  if (e.target.closest(".cushion") || e.target.closest(".char")) return;
+  const r = hall.getBoundingClientRect();
+  const x = ((e.clientX - r.left) / r.width) * 100;
+  const y = ((e.clientY - r.top) / r.height) * 100;
+  moveTo(x, y, "đang đi dạo");
+});
+document.addEventListener("keydown", (e) => {
+  if (!me) return;
+  if (["INPUT", "SELECT", "TEXTAREA"].includes(document.activeElement.tagName)) return;
+  const step = 5; let used = true;
+  if (e.key === "ArrowLeft") myPos.x -= step;
+  else if (e.key === "ArrowRight") myPos.x += step;
+  else if (e.key === "ArrowUp") myPos.y -= step;
+  else if (e.key === "ArrowDown") myPos.y += step;
+  else used = false;
+  if (used) { e.preventDefault(); moveTo(myPos.x, myPos.y, "đang đi dạo"); }
+});
+$("walkBtn").addEventListener("click", () => moveTo(46 + Math.random() * 8, 62 + Math.random() * 26, "đang đi dạo"));
+$("sitBtn").addEventListener("click", () => {
+  const taken = new Set([...chars.values()].map((c) => c.data && c.data.seat).filter((v) => v != null));
+  for (let i = 0; i < SEATS.length; i++) if (!taken.has(i)) return sitOnSeat(i);
+  $("hallStatus").textContent = "Các đệm đều đã có người ngồi. Bạn đứng thiền tại chỗ một lát nhé.";
+});
+$("incenseBtn").addEventListener("click", () => {
+  if (!me) { enterTemple(); return; }
+  myPos = { x: 50, y: 44 }; renderMe("đang dâng hương"); emitMove("đang dâng hương");
+  hall.classList.add("smoking");
+  setTimeout(() => hall.classList.remove("smoking"), 6000);
+  if (socket && connected) socket.emit("offer_incense", {});
+  $("hallStatus").textContent = me.name + " dâng hương trước bàn thờ — khói hương bay lên, lòng thành hướng Phật.";
+});
+$("bowBtn").addEventListener("click", () => {
+  if (!me) { enterTemple(); return; }
+  myPos = { x: 50, y: 50 }; renderMe("đang vái lạy"); emitMove("đang vái lạy");
+  const c = chars.get(myId || "me"); if (c) c.el.classList.add("bowing");
+  let count = 0;
+  const iv = setInterval(() => { count++; if (count >= 3) { clearInterval(iv); if (c) c.el.classList.remove("bowing"); renderMe("đang đứng"); } }, 1200);
+  if (socket && connected) socket.emit("bow", {});
+  $("hallStatus").textContent = me.name + " vái lạy ba lạy trước Phật.";
+});
+$("bellBtn").addEventListener("click", () => {
+  ensureAudio(); playBowl(0.8);
+  if (socket && connected) socket.emit("ring_bell", {});
+  $("hallStatus").textContent = "🔔 Tiếng chuông vang khắp chánh điện.";
+});
+
+/* Hòm Công Đức — mở mã QR của chính user */
+$("donateBox").addEventListener("click", () => { $("qrModal").classList.add("open"); });
+$("qrCloseBtn").addEventListener("click", () => { $("qrModal").classList.remove("open"); });
+$("qrModal").addEventListener("click", (e) => { if (e.target === $("qrModal")) $("qrModal").classList.remove("open"); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") $("qrModal").classList.remove("open"); });
+
+/* ============ Kết nối Socket.io ============ */
+function connectSocket() {
+  const url = $("serverUrl").value.trim();
+  if (socket) { try { socket.disconnect(); } catch (e) {} }
+  socket = io(url || undefined, { transports: ["websocket", "polling"] });
+  socket.on("connect", () => {
+    connected = true; myId = socket.id;
+    removeChar("me");
+    $("connStatus").textContent = "Đã kết nối server chùa ✓ — mọi người trong chùa nhìn thấy nhau trong thời gian thực.";
+    if (me) { socket.emit("set_profile", { name: me.name, gender: me.gender }); renderMe("đang đứng"); }
+  });
+  socket.on("disconnect", () => {
+    connected = false;
+    $("connStatus").textContent = "Mất kết nối server — bạn vẫn ở chánh điện một mình, các tính năng vẫn dùng được.";
+  });
+  socket.on("connect_error", () => {
+    $("connStatus").textContent = "Chưa nối được server ở địa chỉ đã nhập. Kiểm tra lại địa chỉ rồi bấm Kết nối — bạn vẫn dùng chùa một mình được.";
+  });
+  socket.on("current_users", (list) => {
+    (list || []).forEach((u) => { if (u.id !== myId) renderChar(nearSeat(u)); });
+    $("userCount").textContent = (list || []).length + (me ? 1 : 0);
+    refreshSeatTaken();
+  });
+  socket.on("new_user", (u) => { if (u.id !== myId) renderChar(nearSeat(u)); refreshSeatTaken(); });
+  socket.on("user_moved", (u) => { if (u.id !== myId) renderChar(nearSeat(u)); refreshSeatTaken(); });
+  socket.on("user_meditate", (u) => { if (u.id !== myId) renderChar(nearSeat(u)); refreshSeatTaken(); });
+  socket.on("user_left", (d) => { removeChar(d.id); refreshSeatTaken(); });
+  socket.on("user_count", (d) => { $("userCount").textContent = d.count; });
+  socket.on("chat_message", (m) => {
+    addChatLine(m.name, m.text);
+    showBubble(m.id, m.text);
+    if (m.id === myId) return;
+  });
+  socket.on("bell_rung", (d) => {
+    ensureAudio(); playBowl(0.7);
+    $("hallStatus").textContent = "🔔 " + d.name + " thỉnh chuông — tiếng chuông vang cho cả chùa.";
+  });
+  socket.on("incense_offered", (d) => {
+    hall.classList.add("smoking"); setTimeout(() => hall.classList.remove("smoking"), 6000);
+    $("hallStatus").textContent = "🙏 " + d.name + " dâng hương trước bàn thờ.";
+  });
+  socket.on("user_bowed", (d) => { $("hallStatus").textContent = "🙇 " + d.name + " đang vái lạy ba lạy trước Phật."; });
+  socket.on("tiktok_gift", (d) => queueGift(d.name, d.gift));
+}
+function nearSeat(u) {
+  const out = Object.assign({}, u);
+  if (u.meditating) {
+    let best = null, bd = 1e9;
+    SEATS.forEach((s, i) => { const dd = Math.hypot(s.x - u.x, s.y - u.y); if (dd < bd) { bd = dd; best = i; } });
+    if (bd < 6) out.seat = best;
+  }
+  return out;
+}
+$("connectBtn").addEventListener("click", connectSocket);
+connectSocket();
+
+/* ============ Chat ============ */
+$("chatBtn").addEventListener("click", () => { $("chatPanel").classList.toggle("open"); if ($("chatPanel").classList.contains("open")) $("chatInput").focus(); });
+function addChatLine(name, text) {
+  const p = document.createElement("p");
+  p.innerHTML = "<b>" + esc(name) + ":</b> " + esc(text);
+  $("chatLog").appendChild(p);
+  $("chatLog").scrollTop = $("chatLog").scrollHeight;
+}
+$("chatForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const text = $("chatInput").value.trim();
+  if (!text) return;
+  if (!me) { enterTemple(); if (!me) return; }
+  $("chatInput").value = "";
+  if (socket && connected) socket.emit("chat_message", { text });
+  else { addChatLine(me.name, text); showBubble(myId || "me", text); }
+});
+
+/* ============ Lời chúc quà TikTok ============ */
+const giftQueue = []; let giftShowing = false;
+function queueGift(name, gift) {
+  if (!name || !gift) return;
+  giftQueue.push({ name, gift });
+  showNextGift();
+}
+function showNextGift() {
+  if (giftShowing || !giftQueue.length) return;
+  giftShowing = true;
+  const g = giftQueue.shift();
+  $("giftWho").textContent = g.name + " tặng “" + g.gift + "”";
+  $("giftText").textContent = "Nguyện cho " + g.name + " thân tâm an lạc, gia đạo bình an, mọi việc hanh thông. Cả phòng live cùng chung vui với món quà “" + g.gift + "”.";
+  $("giftScroll").classList.add("show");
+  ensureAudio(); playBowl(0.8);
+  setTimeout(() => { $("giftScroll").classList.remove("show"); giftShowing = false; showNextGift(); }, 6500);
+}
+// Cầu nối / server chùa chỉ cần gọi 1 trong 3 cách sau:
+window.hienLoiChucQuaTang = function (d) { queueGift(d.ten || d.name, d.qua || d.gift); };
+window.addEventListener("message", (e) => {
+  const d = e.data || {};
+  if (d.type === "tiktok_gift") queueGift(d.name, d.gift);
+});
+
+/* ============ Gieo Quẻ — 100 quẻ ============ */
+const QUE_TITLES = [
+"Sen nở giữa hồ","Trăng sáng đầu non","Gió xuân qua cửa","Mưa thuận gió hòa","Đèn sáng trong đêm",
+"Cá vượt vũ môn","Chim về tổ ấm","Lúa chín đầy đồng","Suối trong chảy mãi","Hoa đào nở sớm",
+"Thuyền về bến cũ","Nắng ấm sau mưa","Trà thơm buổi sớm","Chuông chùa ngân xa","Đường mòn lên núi",
+"Bướm đậu nhành mai","Sóng lặng bến bờ","Cơm lành canh ngọt","Áo ấm mùa đông","Tay nắm tay nhau",
+"Gieo hạt mùa xuân","Quả ngọt đầu cành","Sách mở trang mới","Cầu vồng sau bão","Lá rơi về cội",
+"Ngọn lửa bếp hồng","Giấc mộng lành","Người xưa trở lại","Cửa chùa rộng mở","Bước chân nhẹ nhàng",
+"Tâm an vạn sự an","Phúc đến từ thiện tâm","Nước chảy đá mòn","Cây cao đón gió","Mây trắng bay qua",
+"Đò ngang sang sông","Hạt mưa đầu hạ","Tiếng sáo đồng quê","Vầng dương mới mọc","Bến đỗ bình yên",
+"Chén trà đãi khách","Vườn rau xanh tốt","Con đường thẳng tắp","Ngôi nhà ấm cúng","Lời hay ý đẹp",
+"Mùa gặt bội thu","Sao sáng dẫn đường","Dòng sông êm đềm","Bàn tay nâng đỡ","Nụ cười trẻ thơ",
+"Chim én báo xuân","Hạt giống nảy mầm","Lửa ấm sưởi lòng","Trăng rằm tròn đầy","Gió mát hiên nhà",
+"Cây đa bóng mát","Giếng nước trong veo","Con thuyền ra khơi","Ngọn đồi hoa cỏ","Bình minh rực rỡ",
+"Tiếng chuông buổi sớm","Đường về quê cũ","Mái ấm sum vầy","Hương sen thoang thoảng","Ánh nến lung linh",
+"Lời kinh buổi chiều","Bước qua cầu nhỏ","Vườn hoa rực rỡ","Dòng suối mát lành","Bầu trời trong xanh",
+"Chiếc lá mùa thu","Ngọn gió lành","Tay trắng làm nên","Cánh đồng vàng óng","Con đường hoa nở",
+"Tiếng hát trong trẻo","Mưa xuân lất phất","Nắng vàng sân chùa","Chén cơm đầy ắp","Gia đình hòa thuận",
+"Người bạn tri kỷ","Công việc thuận buồm","Sức khỏe dồi dào","Tình duyên đơm hoa","Học hành tấn tới",
+"Tài lộc gõ cửa","Quý nhân phù trợ","Việc khó hóa dễ","Lòng người rộng mở","Ngày mới an lành",
+"Phước đức đầy nhà","Tâm sáng như gương","Đường xa hóa gần","Mọi sự viên mãn","An nhiên tự tại",
+"Đông về tuyết phủ","Bốn mùa bình an","Trăm năm hạnh phúc","Vạn sự như ý","Tâm thành thì linh"
+];
+const QUE_POEMS = [
+"Tâm lặng như hồ thu phẳng lặng\nGió nhẹ qua rồi sóng cũng tan\nViệc đến việc đi đều là duyên\nGiữ lòng thiện, phúc tự tìm sang.",
+"Đường dài chớ ngại bước chân mỏi\nTừng bước nhỏ cũng tới đích xa\nKiên nhẫn gieo trồng ngày hôm nay\nMùa sau quả ngọt nở đầy nhà.",
+"Trăng lên soi sáng lối về\nLòng người trong sáng, việc gì cũng thông\nChớ vội, chớ nóng, chớ buồn\nNhân duyên chín muồi tự khắc tròn.",
+"Sen từ bùn mọc vẫn thơm\nNgười từ khổ luyện mới nên thân\nKhó khăn hôm nay là thầy dạy\nNgày mai nhìn lại, mỉm cười thầm.",
+"Nước chảy về nguồn không ngừng nghỉ\nNgười đi về thiện chẳng lạc đường\nMột lời nói lành gieo hôm nay\nTrăm năm sau vẫn tỏa hương thơm.",
+"Gió xuân thổi nhẹ qua hiên\nHoa đào hé nụ, chim hót vang\nViệc lành đã gieo từ thuở trước\nNay đơm hoa kết trái đàng hoàng.",
+"Đừng nhìn bóng tối mà lo sợ\nHãy thắp lên một ngọn đèn nhỏ\nÁnh sáng tuy nhỏ nhưng bền lâu\nSoi đường cho cả người qua lại.",
+"Cây cao nhờ rễ sâu bám đất\nNgười vững nhờ đức dày tu thân\nMuốn đi xa, hãy đi chậm lại\nMuốn bền lâu, hãy sống chân thành.",
+"Mưa rơi xuống đất thành dòng mát\nLời lành rơi xuống lòng thành suối trong\nCho đi là nhận lại gấp bội\nTâm rộng mở, phúc đức đầy nhà.",
+"Thuyền ra khơi gặp sóng to\nTay chèo vững, lòng không nao núng\nQua cơn sóng dữ, biển lặng yên\nBến bình an đang chờ phía trước.",
+"Chuông chùa vang vọng giữa đêm thanh\nĐánh thức lòng người khỏi mộng dài\nBuông xuống những điều không cần giữ\nNhẹ nhàng như gió thoảng qua vai.",
+"Đồng lúa chín vàng trong nắng sớm\nMồ hôi năm cũ hóa niềm vui\nAi gieo nhân lành không mỏi mệt\nGặt về một mùa đầy tiếng cười.",
+"Trà đắng đầu lưỡi, ngọt hậu vị\nĐời người khổ trước, sướng về sau\nChịu khó hôm nay đừng than thở\nNgày mai quả ngọt đến tay nhau.",
+"Mây bay qua núi không dừng lại\nNgười qua đời chớ chấp vào đâu\nBuông được một niệm, nhẹ một bước\nTrời cao đất rộng thênh thang sầu.",
+"Đèn khuya soi bóng người đọc sách\nChữ nghĩa thấm dần vào tâm can\nHọc một điều hay, đời sáng một phần\nKiên trì ba năm, khác hẳn xưa.",
+"Hai bàn tay trắng dựng cơ đồ\nMột tấm lòng son giữ đạo nhà\nViệc lớn bắt đầu từ việc nhỏ\nNgày ngày vun đắp, phúc sinh ra.",
+"Xuân qua hạ tới, thu lại về\nBốn mùa luân chuyển, chẳng ngừng đâu\nĐời người cũng thế, có lên xuống\nGiữ tâm bình thản, vạn sự an.",
+"Chim én bay về báo tin xuân\nNhà nhà sum họp, tiếng cười vang\nGia đạo hòa thuận là phúc lớn\nHơn cả vàng bạc chất đầy khoang.",
+"Suối nguồn trong mát chảy không ngừng\nTâm người trong sáng chẳng vẩn đục\nSống thật với mình, sống tốt với người\nĐi đến đâu cũng được thương yêu.",
+"Ngọn lửa nhỏ sưởi ấm đêm đông\nMột việc thiện nhỏ ấm lòng người\nĐừng coi thường điều nhỏ bé ấy\nTích tiểu thành đại, phúc vô biên."
+];
+const QUE_MEANINGS = [
+"Quẻ nhắc bạn giữ tâm bình lặng, việc đang băn khoăn sẽ sáng tỏ khi bạn không vội vàng quyết định.",
+"Đây là lời nhắc về sự kiên nhẫn: cứ làm tốt việc nhỏ mỗi ngày, kết quả tốt sẽ đến đúng lúc.",
+"Nhân duyên đang chín dần. Bạn nên mở lòng, nói lời hòa nhã và đón nhận sự giúp đỡ của người xung quanh.",
+"Khó khăn hiện tại là bài học quý. Vượt qua lần này, bạn sẽ vững vàng hơn và được người khác tin cậy.",
+"Hãy bắt đầu từ một việc thiện nhỏ trong ngày hôm nay — giúp người, nói lời lành, giữ tâm trong sáng.",
+"Việc bạn mong cầu có căn lành từ trước. Tiếp tục sống thiện và làm việc chăm chỉ, tin vui sẽ tới.",
+"Đừng để nỗi lo che mờ tâm trí. Thắp sáng một thói quen tốt mỗi ngày, con đường sẽ dần rõ ràng.",
+"Muốn bền lâu thì lấy đức làm gốc. Giữ chữ tín trong công việc, giữ hòa khí trong gia đình, mọi sự sẽ thuận.",
+"Cho đi không mất, mà còn sinh thêm phúc. Tuần này, hãy dành một việc tốt cho người đang cần bạn.",
+"Sóng gió rồi sẽ qua. Giữ tay chèo vững, đừng bỏ dở giữa chừng — bến bình an ở ngay phía trước.",
+"Buông bỏ một điều đã cũ sẽ nhẹ lòng hơn bạn tưởng. Khi tâm nhẹ, trí mới sáng để thấy đường đi.",
+"Công sức bạn bỏ ra không uổng phí. Mùa gặt đang tới; hãy chuẩn bị đón nhận bằng tâm khiêm nhường.",
+"Khổ trước sướng sau. Giai đoạn này cần bạn bền chí thêm một chút, đừng vì nản mà dừng lại.",
+"Mọi sự vô thường, đừng chấp quá sâu vào được — mất. Tâm an thì ở đâu cũng là chốn bình an.",
+"Học thêm một điều mới trong tháng này sẽ mở ra cơ hội mà hôm nay bạn chưa nhìn thấy.",
+"Việc lớn bắt đầu từ việc nhỏ. Đừng chờ đủ đầy mới bắt đầu; bắt đầu ngay với những gì đang có.",
+"Đời có lên có xuống như bốn mùa. Giai đoạn lặng này là lúc nghỉ ngơi và chuẩn bị cho bước tiếp theo.",
+"Gia đạo hòa thuận là nền tảng của mọi phúc. Dành thời gian cho người thân, nói lời cảm ơn nhiều hơn.",
+"Sống chân thành sẽ được đáp lại bằng chân thành. Người tốt đang ở gần bạn hơn bạn nghĩ.",
+"Tích lũy việc thiện nhỏ mỗi ngày: một nụ cười, một lời động viên — phúc đức lớn lên âm thầm."
+];
+const QUE_GRADES = ["Thượng thượng","Thượng","Trung thượng","Trung","Trung hạ"];
+$("drawQueBtn").addEventListener("click", () => {
+  const tube = $("queTube");
+  tube.classList.add("shaking");
+  $("queResult").innerHTML = "<p>Ống quẻ đang lắc… Xin lặng lòng một lát.</p>";
+  setTimeout(() => {
+    tube.classList.remove("shaking");
+    const n = 1 + Math.floor(Math.random() * 100);
+    const poem = QUE_POEMS[(n * 7) % QUE_POEMS.length];
+    const meaning = QUE_MEANINGS[(n * 11) % QUE_MEANINGS.length];
+    const grade = QUE_GRADES[n % QUE_GRADES.length];
+    $("queResult").innerHTML =
+      '<div class="que-result"><div class="num">Quẻ số ' + n + ' / 100 · ' + esc(grade) + '</div>' +
+      "<h3>" + esc(QUE_TITLES[n - 1]) + "</h3>" +
+      '<p class="poem">' + esc(poem) + "</p><p>" + esc(meaning) + "</p></div>";
+  }, 1800);
+});
+
+/* ============ Bát Tự · Tử Vi (công thức rút gọn) ============ */
+const NAP_AM = [
+  "Hải Trung Kim","Giản Hạ Thủy","Tích Lịch Hỏa","Bích Thượng Thổ","Tang Đố Mộc",
+  "Đại Khê Thủy","Lư Trung Hỏa","Thành Đầu Thổ","Tùng Bách Mộc","Kim Bạch Kim",
+  "Phúc Đăng Hỏa","Sa Trung Thổ","Đại Lâm Mộc","Bạch Lạp Kim","Trường Lưu Thủy",
+  "Sa Trung Kim","Thiên Hà Thủy","Thiên Thượng Hỏa","Lộ Bàng Thổ","Dương Liễu Mộc",
+  "Tuyền Trung Thủy","Sơn Hạ Hỏa","Đại Dịch Thổ","Thạch Lựu Mộc","Kiếm Phong Kim",
+  "Sơn Đầu Hỏa","Ốc Thượng Thổ","Bình Địa Mộc","Thoa Xuyến Kim","Đại Hải Thủy"
+];
+function pillar(can, chi) { return CAN[can] + " " + CHI[chi]; }
+function napAm(can, chi) { return NAP_AM[Math.floor(chi / 2) * 5 + Math.floor(can / 2)]; }
+function elementOf(napAmName) {
+  if (napAmName.includes("Kim")) return "Kim";
+  if (napAmName.includes("Thủy")) return "Thủy";
+  if (napAmName.includes("Hỏa")) return "Hỏa";
+  if (napAmName.includes("Thổ")) return "Thổ";
+  return "Mộc";
+}
+function calcBatu() {
+  const dateVal = $("bdDate").value;
+  if (!dateVal) { $("batuResult").innerHTML = "<p>Vui lòng chọn ngày sinh.</p>"; return; }
+  const d = new Date(dateVal + "T12:00:00");
+  const y0 = d.getFullYear(), m = d.getMonth() + 1, day = d.getDate();
+  // Trụ năm: lấy năm Lập Xuân (khoảng 4/2) làm mốc rút gọn.
+  const y = (m < 2 || (m === 2 && day < 4)) ? y0 - 1 : y0;
+  const yCan = ((y - 4) % 10 + 10) % 10, yChi = ((y - 4) % 12 + 12) % 12;
+  // Trụ tháng (rút gọn theo tháng dương lịch): tháng 2 ~ Dần.
+  const mChi = m % 12;
+  const monthBase = { 0: 2, 1: 4, 2: 6, 3: 8, 4: 0 }[yCan % 5];
+  const mCan = ((monthBase + ((mChi - 2 + 12) % 12)) % 10);
+  // Trụ ngày: công thức Lịch Julian — đã kiểm chứng: 10/2/2024 = Giáp Thìn.
+  const jdn = Math.floor(Date.UTC(y0, m - 1, day) / 86400000) + 2440588;
+  const dCan = ((jdn + 9) % 10 + 10) % 10, dChi = ((jdn + 1) % 12 + 12) % 12;
+  // Trụ giờ
+  const hourVal = $("bdHour").value;
+  let hCan = null, hChi = null, hourLabel = "Không rõ";
+  if (hourVal !== "") {
+    hChi = Number(hourVal);
+    const hourBase = { 0: 0, 1: 2, 2: 4, 3: 6, 4: 8 }[dCan % 5];
+    hCan = (hourBase + hChi) % 10;
+    hourLabel = CHI[hChi] + " (" + $("bdHour").selectedOptions[0].textContent.split("—")[1].trim() + ")";
+  }
+  const pillars = [
+    { name: "Năm", can: yCan, chi: yChi },
+    { name: "Tháng", can: mCan, chi: mChi },
+    { name: "Ngày", can: dCan, chi: dChi },
+  ];
+  if (hCan != null) pillars.push({ name: "Giờ", can: hCan, chi: hChi });
+  const counts = { Kim: 0, Mộc: 0, Thủy: 0, Hỏa: 0, Thổ: 0 };
+  pillars.forEach((p) => { counts[elementOf(napAm(p.can, p.chi))]++; });
+  const total = pillars.length;
+  const yearNap = napAm(yCan, yChi);
+  const menh = elementOf(yearNap);
+  // An sao Tử Vi rút gọn: Mệnh cung từ tháng + giờ; 14 chính tinh xếp quanh Mệnh cung.
+  const CUNG = ["Dần","Mão","Thìn","Tỵ","Ngọ","Mùi","Thân","Dậu","Tuất","Hợi","Tý","Sửu"];
+  let menhCung = "—";
+  if (hChi != null) {
+    const monthIdx = (mChi - 2 + 12) % 12; // vị trí tháng trong vòng Dần...
+    const menhIdx = ((monthIdx - hChi) % 12 + 12) % 12;
+    menhCung = CUNG[menhIdx] + " cung";
+  }
+  const starBase = hChi != null ? ((mChi - 2 - hChi) % 12 + 12) % 12 : 0;
+  const STARS = ["Tử Vi","Thiên Cơ","Thái Dương","Vũ Khúc","Thiên Đồng","Liêm Trinh","Thiên Phủ","Thái Âm","Tham Lang","Cự Môn","Thiên Tướng","Thiên Lương","Thất Sát","Phá Quân"];
+  const starAt = (off) => CUNG[(starBase + off) % 12] + " cung";
+  let html = "<h3 style='margin-top:16px'>Tứ Trụ của bạn</h3><div class='pillars'>";
+  pillars.forEach((p) => {
+    html += "<div class='pillar'><div class='muted'>" + p.name + "</div><div class='big'>" + pillar(p.can, p.chi) + "</div><div>" + napAm(p.can, p.chi) + "</div><div class='muted'>" + elementOf(napAm(p.can, p.chi)) + "</div></div>";
+  });
+  html += "</div>";
+  html += "<p><b>Mệnh Ngũ Hành (theo Nạp Âm năm sinh):</b> " + yearNap + " — mệnh <b>" + menh + "</b>.</p>";
+  html += "<h3>Cân bằng Ngũ Hành (đếm theo Nạp Âm " + total + " trụ)</h3>";
+  ["Kim", "Mộc", "Thủy", "Hỏa", "Thổ"].forEach((el) => {
+    const pct = Math.round((counts[el] / total) * 100);
+    html += "<div class='bar'><span class='lbl'>" + el + "</span><span class='track'><span class='fill' style='display:block;width:" + pct + "%'></span></span><span>" + counts[el] + "/" + total + "</span></div>";
+  });
+  const strongest = Object.keys(counts).sort((a, b) => counts[b] - counts[a])[0];
+  const weakest = Object.keys(counts).sort((a, b) => counts[a] - counts[b])[0];
+  html += "<p class='muted'>Hành vượng nhất trong lá số rút gọn: <b>" + strongest + "</b>; hành ít nhất: <b>" + weakest + "</b>. Đây chỉ là gợi ý chiêm nghiệm — cân bằng trong đời sống đến từ thói quen tốt mỗi ngày.</p>";
+  html += "<h3>An sao Tử Vi (rút gọn) — Mệnh cung: " + menhCung + "</h3>";
+  if (hChi == null) {
+    html += "<p class='muted'>Bạn chưa chọn giờ sinh nên chưa an được Mệnh cung chính xác. Chọn giờ sinh để xem vị trí các sao.</p>";
+  } else {
+    html += "<p>" + STARS.map((s, i) => "<b>" + s + "</b> tại " + starAt([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1][i])).join(" · ") + ".</p>";
+    html += "<p class='muted'>An sao rút gọn: Tử Vi tọa Mệnh cung, Thiên Phủ đối cung, các chính tinh còn lại xếp quanh theo thứ tự truyền thống. Dùng để tham khảo, không thay cho lá số Tử Vi đầy đủ.</p>";
+  }
+  html += "<p class='muted'>Giờ sinh đã dùng: " + esc(hourLabel) + " · Ngày sinh: " + esc(dateVal) + " (dương lịch). Trụ năm tính theo Lập Xuân rút gọn.</p>";
+  $("batuResult").innerHTML = html;
+}
+$("batuBtn").addEventListener("click", calcBatu);
+</script>
+</body>
+</html>

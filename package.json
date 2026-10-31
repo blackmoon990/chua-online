@@ -1,0 +1,1 @@
+{"dependencies":{"express":"^4.21.2","socket.io":"^4.8.1"},"description":"Chùa online nhiều người thật: chánh điện, thiền, dâng hương, vái lạy, thỉnh chuông, chat, gieo quẻ, bát tự — chạy bằng Node.js + Socket.io","engines":{"node":">=18"},"main":"server.js","name":"chua-online","scripts":{"start":"node server.js"},"type":"commonjs","version":"1.0.0"}
