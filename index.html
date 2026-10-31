@@ -37,18 +37,12 @@ button.small{padding:7px 12px;font-size:13px}
 .char{position:absolute;width:60px;text-align:center;z-index:6;transform:translate(-50%,-100%);transition:left .5s ease,top .5s ease;pointer-events:none}
 .char .nametag{display:inline-block;background:#1e3a5f;border:1px solid #e8c46a;color:#fff;font-size:10px;line-height:1.25;padding:2px 7px;border-radius:999px;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.5)}
 .char.me .nametag{border-width:2px;background:#274b7a}
-.char .fig{width:40px;height:54px;margin:2px auto 0;position:relative}
-.char .fig .head{position:absolute;top:0;left:50%;transform:translateX(-50%);width:21px;height:21px;border-radius:50%;background:#f2c89b;z-index:2}
-.char .fig .hair{position:absolute;top:-2px;left:50%;transform:translateX(-50%);width:22px;height:12px;border-radius:9px 9px 4px 4px;background:#2b2b2b;z-index:3}
-.char.female .fig .hair{height:15px;border-radius:9px 9px 7px 7px}
-.char.female .fig .hair::after{content:"";position:absolute;top:-4px;left:50%;transform:translateX(-50%);width:9px;height:9px;border-radius:50%;background:#2b2b2b}
-.char .fig .robe{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:36px;height:34px;border-radius:13px 13px 5px 5px;background:#7d94a8;z-index:1}
-.char.female .fig .robe{background:#b07fa8;width:40px;border-radius:16px 16px 6px 6px}
-.char .fig .arms{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:26px;height:9px;border-radius:4px;background:rgba(0,0,0,.18);z-index:2}
+.char .fig{width:40px;height:56px;margin:2px auto 0}
+.char .fig svg{width:40px;height:56px;display:block}
 .char .halo{position:absolute;left:50%;top:16px;transform:translateX(-50%);width:52px;height:52px;border:3px solid rgba(255,215,90,.95);border-radius:50%;box-shadow:0 0 16px rgba(255,215,90,.9);display:none;z-index:0}
 .char.meditating .halo{display:block}
-.char.meditating .fig{height:44px}
-.char.meditating .fig .robe{height:28px}
+.bgfig{position:absolute;transform:translate(-50%,-100%);z-index:3;opacity:.85;pointer-events:none}
+.bgfig svg{width:34px;height:48px;display:block}
 .char.bowing .fig{transform:rotate(10deg) scaleY(.92)}
 .speech{position:absolute;left:50%;bottom:calc(100% + 2px);transform:translateX(-50%);background:#fff;color:#333;font-size:11px;line-height:1.3;padding:4px 8px;border-radius:10px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.35);z-index:8}
 .speech::after{content:"";position:absolute;left:50%;bottom:-4px;transform:translateX(-50%);border:5px solid transparent;border-top-color:#fff;border-bottom:0}
@@ -208,6 +202,7 @@ footer{text-align:center;color:#7a6a52;font-size:13px;padding:26px 10px;line-hei
 <div class="monk" id="monkEl"><div class="mfig">🧘<span class="arm">🥢</span></div><div class="mo">🪵</div><small>Thầy gõ mõ</small></div>
 <div class="monk monk2"><div class="mfig">🧘</div><small>Thầy tọa thiền</small></div>
 <div class="merit" id="meritBoard"><b>BIA CÔNG ĐỨC</b><div id="meritRows">Chưa có công đức — tặng quà trên live TikTok để ghi danh.</div></div>
+<div id="bgFigures" aria-hidden="true"></div>
 <div id="chars"></div>
 <div class="breath" id="breathBubble">Hít vào…</div>
 <div class="giftScroll" id="giftScroll"></div>
@@ -223,6 +218,7 @@ footer{text-align:center;color:#7a6a52;font-size:13px;padding:26px 10px;line-hei
 <button id="musicToggleBtn">🎵 Nhạc thiền: Bật</button>
 <button id="voiceToggleBtn" class="ghost" style="background:#f3e6c8;color:#6b4423">🔊 Đọc tên: Bật</button>
 <select id="voiceSelect" title="Chọn giọng đọc tiếng Việt — nếu không thấy giọng tiếng Việt, cài thêm gói giọng nói tiếng Việt trong Settings của Windows rồi mở lại trang" style="max-width:180px;padding:7px 6px;border-radius:8px;border:1px solid #c9a86a;background:#fff;color:#5a2f1d;font-size:12px"></select>
+<span id="voiceWarn" style="display:none;max-width:280px;font-size:12px;color:#a33"></span>
 </div>
 <div class="musicRow">
 <label for="musicStyle" style="margin:0">Chọn kiểu nhạc nền</label>
@@ -399,11 +395,56 @@ function autoPlaceMe() {
   renderMe("đang lễ Phật");
   emitMove("đang lễ Phật");
 }
+function figureSVG(female, seated) {
+  const robe = female ? "#b07fa8" : "#7d94a8";
+  const trim = female ? "#8e5f86" : "#5f768a";
+  const skin = "#f2c89b";
+  const hair = "#2b2b2b";
+  const body = seated
+    ? '<path d="M12,78 Q12,58 24,50 L40,50 Q52,58 52,78 Q32,84 12,78 Z" fill="' + robe + '"/>' +
+      '<path d="M22,50 Q32,44 42,50 L42,58 L22,58 Z" fill="' + robe + '"/>' +
+      '<path d="M27,50 L32,57 L37,50" stroke="' + trim + '" stroke-width="2" fill="none" stroke-linecap="round"/>' +
+      '<ellipse cx="32" cy="61" rx="7" ry="3.5" fill="' + skin + '"/>'
+    : '<path d="' + (female ? "M18,38 Q32,32 46,38 L52,78 Q32,84 12,78 Z" : "M20,38 Q32,32 44,38 L48,78 Q32,83 16,78 Z") + '" fill="' + robe + '"/>' +
+      '<path d="M25,36 L32,48 L39,36" stroke="' + trim + '" stroke-width="2" fill="none" stroke-linecap="round"/>' +
+      '<path d="M24,39 L42,74" stroke="#e8c46a" stroke-width="3" opacity="0.75" stroke-linecap="round"/>' +
+      '<path d="M21,43 Q28,53 32,55 Q36,53 43,43" stroke="' + trim + '" stroke-width="6" fill="none" stroke-linecap="round"/>' +
+      '<ellipse cx="32" cy="56" rx="5" ry="4" fill="' + skin + '"/>';
+  const headBase = '<circle cx="32" cy="22" r="11" fill="' + skin + '"/>' +
+    '<circle cx="21" cy="23" r="2.4" fill="' + skin + '"/><circle cx="43" cy="23" r="2.4" fill="' + skin + '"/>';
+  const hairTop = female
+    ? '<path d="M20,24 Q18,8 32,8 Q46,8 44,24 L42,40 Q40,30 38,26 L38,15 Q32,11 26,15 L26,26 Q24,30 22,40 Z" fill="' + hair + '"/>' +
+      '<circle cx="32" cy="6" r="5" fill="' + hair + '"/>' +
+      '<circle cx="32" cy="1" r="2" fill="#e89bb0"/><circle cx="27.5" cy="4" r="2" fill="#e89bb0"/><circle cx="36.5" cy="4" r="2" fill="#e89bb0"/><circle cx="29" cy="9" r="2" fill="#e89bb0"/><circle cx="35" cy="9" r="2" fill="#e89bb0"/><circle cx="32" cy="5" r="1.6" fill="#f5d76e"/>'
+    : '<path d="M20,24 Q19,9 32,9 Q45,9 44,24 Q42,15 32,14 Q22,15 20,24 Z" fill="' + hair + '"/>';
+  const face = '<circle cx="28" cy="21" r="1.3" fill="#3a2a20"/><circle cx="36" cy="21" r="1.3" fill="#3a2a20"/>' +
+    '<path d="M28,27 Q32,30 36,27" stroke="#b0725a" stroke-width="1.4" fill="none" stroke-linecap="round"/>';
+  return '<svg viewBox="0 0 64 84" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
+    '<ellipse cx="32" cy="80" rx="16" ry="3" fill="rgba(0,0,0,0.25)"/>' + body + headBase + hairTop + face + '</svg>';
+}
 function charFigure(u) {
   const female = u.gender === "nu";
-  const icon = u.meditating ? "🧘" : "";
   return '<div class="halo"></div><span class="nametag">' + esc((female ? "♀ " : "♂ ") + u.name + " — Phật tử " + (female ? "nữ" : "nam") + (u.action && u.action !== "đang đứng" ? " · " + esc(u.action) : "")) + '</span>' +
-    '<div class="fig' + (u.meditating ? " sit" : "") + '"><span class="head"></span><span class="hair"></span><span class="robe"></span><span class="arms"></span></div>' + (icon ? '<span style="position:absolute;right:2px;top:18px;font-size:13px">' + icon + "</span>" : "");
+    '<div class="fig">' + figureSVG(female, !!u.meditating) + '</div>';
+}
+// Hình Phật tử đứng nền hai bên điện (trang trí, không phải người thật): điện luôn trông đầy như trên live.
+const BG_FIGURES = [
+  { x: 6, y: 50, female: true }, { x: 93, y: 50, female: false },
+  { x: 6, y: 61, female: false }, { x: 93, y: 61, female: true },
+  { x: 6, y: 72, female: true }, { x: 93, y: 72, female: false },
+  { x: 6, y: 83, female: false }, { x: 93, y: 83, female: true },
+];
+function buildBgFigures() {
+  const wrap = $("bgFigures");
+  if (!wrap) return;
+  BG_FIGURES.forEach((f, i) => {
+    const d = document.createElement("div");
+    d.className = "bgfig";
+    d.style.left = f.x + "%"; d.style.top = f.y + "%";
+    d.style.opacity = (i % 2 ? 0.8 : 0.88);
+    d.innerHTML = figureSVG(f.female, false);
+    wrap.appendChild(d);
+  });
 }
 function renderChars() {
   const wrap = $("chars");
@@ -869,6 +910,11 @@ function populateVoiceSelect() {
     return;
   }
   const hasVi = vs.some((v) => v.lang && v.lang.toLowerCase().indexOf("vi") === 0);
+  const warn = $("voiceWarn");
+  if (warn) {
+    warn.style.display = (vs.length && !hasVi) ? "inline" : "none";
+    if (vs.length && !hasVi) warn.textContent = "⚠️ Máy này chưa có giọng tiếng Việt nên giọng đọc chưa chuẩn. Cài gói giọng nói tiếng Việt trong Settings → Time & language → Language & region → Add Vietnamese (kèm Text-to-speech), khởi động lại Chrome rồi mở lại trang.";
+  }
   if (!hasVi) {
     const o = document.createElement("option");
     o.disabled = true;
@@ -1376,6 +1422,7 @@ $("lunarBtn").addEventListener("click", () => {
   $("lunarOut").textContent = "Ngày " + d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " dương lịch là " + lunarText(d.getDate(), d.getMonth() + 1, d.getFullYear()) + ".";
 });
 /* ============ Khởi tạo ============ */
+buildBgFigures();
 renderChars();
 spawnPetals();
 $("serverUrl").value = window.location.origin;
