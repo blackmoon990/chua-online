@@ -33,12 +33,9 @@ button.small{padding:7px 12px;font-size:13px}
 .hallTitle{position:absolute;left:50%;top:2%;transform:translateX(-50%);text-align:center;z-index:4;pointer-events:none;width:80%}
 .hallTitle b{font-family:Georgia,serif;font-size:clamp(18px,3.4vw,30px);color:#ffd94d;text-shadow:0 2px 8px #000,0 0 22px rgba(255,200,60,.7);letter-spacing:1px}
 .hallTitle small{display:block;color:#fff;font-size:11px;text-shadow:0 1px 4px #000;margin-top:2px}
-.vbanner{position:absolute;top:24%;width:4.6%;padding:10px 0;text-align:center;z-index:3;background:linear-gradient(180deg,#8a1f14,#a8321f);color:#f7d774;border:2px solid #e8c46a;border-radius:6px;font-family:Georgia,serif;font-weight:700;font-size:clamp(10px,1.35vw,13px);line-height:1.25;letter-spacing:1.5px;writing-mode:vertical-rl;text-orientation:upright;white-space:nowrap;overflow:hidden;transition:opacity .8s;box-shadow:0 2px 8px rgba(0,0,0,.4)}
-.vbanner.left{left:1.2%}
-.vbanner.right{right:1.2%}
-.seat{position:absolute;width:6.6%;aspect-ratio:1.35;border-radius:50%;background:radial-gradient(circle at 50% 38%,#c65a41,#8a2b1e 70%);border:3px solid #e8c46a;box-shadow:0 3px 6px rgba(0,0,0,.45),inset 0 0 0 3px rgba(0,0,0,.18);cursor:pointer;z-index:2;transform:translate(-50%,-50%)}
+.seat{position:absolute;width:6.6%;aspect-ratio:1.5;border-radius:12px;background:linear-gradient(180deg,#b8442f,#8a2b1e);border:3px solid #e8c46a;box-shadow:0 3px 6px rgba(0,0,0,.45),inset 0 0 0 3px rgba(0,0,0,.18);cursor:pointer;z-index:2;transform:translate(-50%,-50%)}
 .seat.taken{cursor:default;opacity:.92}
-.aisle{position:absolute;left:46%;top:70%;width:8%;height:28%;background:rgba(255,244,200,.18);border-radius:8px;cursor:pointer;z-index:1}
+.aisle{position:absolute;left:40%;top:66%;width:20%;height:32%;background:rgba(255,244,200,.10);border-radius:8px;cursor:pointer;z-index:1}
 .char{position:absolute;width:52px;text-align:center;z-index:6;transform:translate(-50%,-100%);transition:left .5s ease,top .5s ease;pointer-events:none}
 .char .nametag{display:inline-block;background:#1e3a5f;border:1px solid #e8c46a;color:#fff;font-size:10px;line-height:1.25;padding:2px 7px;border-radius:999px;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.5)}
 .char.me .nametag{border-width:2px;background:#274b7a}
@@ -70,12 +67,12 @@ button.small{padding:7px 12px;font-size:13px}
 .donateBox b{display:block;font-size:13px}
 .petal{position:absolute;top:-14px;z-index:5;width:11px;height:8px;background:rgba(255,183,197,.9);border-radius:60% 40% 60% 40%;pointer-events:none;animation:fall linear infinite}
 @keyframes fall{to{transform:translateY(115%) rotate(340deg);opacity:.85}}
-.smokePlume{position:absolute;left:50%;top:52%;transform:translateX(-50%);z-index:4;pointer-events:none;width:60px;height:70px;overflow:visible}
+.smokePlume{position:absolute;left:50%;top:48%;transform:translateX(-50%);z-index:4;pointer-events:none;width:60px;height:70px;overflow:visible}
 .smokePlume i{position:absolute;bottom:0;left:50%;width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,.55);filter:blur(4px);animation:rise 5s ease-in infinite}
 .smokePlume i:nth-child(2){animation-delay:1.6s;left:44%}
 .smokePlume i:nth-child(3){animation-delay:3.1s;left:56%}
 @keyframes rise{0%{transform:translate(0,0) scale(.7);opacity:0}25%{opacity:.8}100%{transform:translate(-14px,-64px) scale(2.1);opacity:0}}
-.monk{position:absolute;left:3%;bottom:23%;z-index:6;width:56px;text-align:center;pointer-events:none}
+.monk{position:absolute;left:3%;bottom:38%;z-index:6;width:56px;text-align:center;pointer-events:none}
 .monk .mfig{font-size:30px;line-height:1;filter:drop-shadow(0 2px 3px rgba(0,0,0,.5))}
 .monk .mo{font-size:22px;display:inline-block;transform-origin:50% 100%}
 .monk .arm{position:absolute;top:6px;right:6px;font-size:15px;transform-origin:100% 100%}
@@ -205,9 +202,7 @@ footer{text-align:center;color:#7a6a52;font-size:13px;padding:26px 10px;line-hei
 
 <section class="card">
 <div class="hall" id="hall">
-<div class="hallTitle"><b>✦ Cầu Bình An ✦</b><small>Khách trên live TikTok bình luận để vào lễ Phật cùng mọi người</small></div>
-<div class="vbanner left" id="bannerL">Một câu niệm Phật</div>
-<div class="vbanner right" id="bannerR">Một phút an nhiên</div>
+<div class="hallTitle"><b>✦ Cầu Bình An ✦</b><small id="hallSub">Khách trên live TikTok bình luận để vào lễ Phật cùng mọi người</small></div>
 <div class="donateBox" id="donateBox" role="button" aria-label="Mở hòm công đức để xem mã QR">🧧<br><b>Hòm Công Đức</b>Ấn để mở mã QR</div>
 <div class="aisle" id="aisle" title="Chạm vào lối đi để đi dạo"></div>
 <div id="seats"></div>
@@ -375,8 +370,8 @@ let entered = false, socket = null, connected = false;
 const users = new Map();
 let myPos = { x: 50, y: 88 }, mySeat = null, meditating = false, meditateStart = 0, medInterval = null;
 let knockTotal = 0, chatUnread = 0, chatOpen = false;
-const SEAT_COLS = [15, 27, 39, 61, 73, 85];
-const SEAT_ROWS = [72, 79, 86, 93];
+const SEAT_COLS = [11, 22, 32, 68, 78, 89];
+const SEAT_ROWS = [70, 78, 86, 93];
 const SEATS = [];
 SEAT_COLS.forEach((x) => SEAT_ROWS.forEach((y) => SEATS.push({ x, y })));
 
@@ -974,21 +969,16 @@ function spawnPetals() {
     hall.appendChild(p);
   }
 }
-const BANNER_PAIRS = [
-  ["Một câu niệm Phật", "Một phút an nhiên"],
-  ["Gieo hạt thiện lành", "Gặt quả bình an"],
-  ["Tâm an vạn sự an", "Lòng tĩnh phúc tự đến"]
+const HALL_SUBS = [
+  "Khách trên live TikTok bình luận để vào lễ Phật cùng mọi người",
+  "Gieo hạt thiện lành · Gặt quả bình an",
+  "Tâm an vạn sự an · Lòng tĩnh phúc tự đến",
+  "Một câu niệm Phật · Một phút an nhiên"
 ];
-let bannerIdx = 0;
+let hallSubIdx = 0;
 setInterval(() => {
-  bannerIdx = (bannerIdx + 1) % BANNER_PAIRS.length;
-  const l = $("bannerL"), r = $("bannerR");
-  l.style.opacity = 0; r.style.opacity = 0;
-  setTimeout(() => {
-    l.textContent = BANNER_PAIRS[bannerIdx][0];
-    r.textContent = BANNER_PAIRS[bannerIdx][1];
-    l.style.opacity = 1; r.style.opacity = 1;
-  }, 800);
+  hallSubIdx = (hallSubIdx + 1) % HALL_SUBS.length;
+  $("hallSub").textContent = HALL_SUBS[hallSubIdx];
 }, 7000);
 let breathIn = true;
 setInterval(() => {
