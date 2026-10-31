@@ -209,6 +209,14 @@ io.on("connection", (socket) => {
     addMerit(name, d.points || d.coins || d.xu);
   });
 
+  // Cầu nối TikTok báo có người mới vào xem live: { name } -> cả chùa nghe chào mừng.
+  socket.on("tiktok_join", (data) => {
+    const d = data || {};
+    const name = cleanName(d.name || d.ten);
+    if (!name) return;
+    io.emit("tiktok_join", { name });
+  });
+
   // Cầu nối gửi thẳng bảng xếp hạng đã tính sẵn: { entries: [{ name, points }] }.
   socket.on("merit_board", (data) => {
     const entries = (data && data.entries) || [];

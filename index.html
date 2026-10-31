@@ -29,16 +29,16 @@ button.small{padding:7px 12px;font-size:13px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
 @media(max-width:600px){.grid2{grid-template-columns:1fr}}
 /* ===== Chánh điện ===== */
-.hall{position:relative;width:100%;aspect-ratio:16/10;border-radius:14px;overflow:hidden;border:3px solid #7a5228;background:#3a2410 url("hall-bg.jpg") center 32%/cover no-repeat}
+.hall{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;border:3px solid #7a5228;background:#3a2410 url("hall-bg.jpg") center/cover no-repeat}
 .hallTitle{position:absolute;left:50%;top:2%;transform:translateX(-50%);text-align:center;z-index:4;pointer-events:none;width:80%}
 .hallTitle b{font-family:Georgia,serif;font-size:clamp(18px,3.4vw,30px);color:#ffd94d;text-shadow:0 2px 8px #000,0 0 22px rgba(255,200,60,.7);letter-spacing:1px}
 .hallTitle small{display:block;color:#fff;font-size:11px;text-shadow:0 1px 4px #000;margin-top:2px}
-.vbanner{position:absolute;top:15%;width:8.5%;padding:10px 2px;text-align:center;z-index:3;background:linear-gradient(180deg,#8a1f14,#a8321f);color:#f7d774;border:2px solid #e8c46a;border-radius:6px;font-family:Georgia,serif;font-weight:700;font-size:clamp(11px,1.8vw,17px);line-height:1.35;writing-mode:vertical-rl;text-orientation:upright;transition:opacity .8s;box-shadow:0 2px 8px rgba(0,0,0,.4)}
-.vbanner.left{left:11%}
-.vbanner.right{right:11%}
-.seat{position:absolute;width:7.2%;aspect-ratio:1.35;border-radius:50%;background:radial-gradient(circle at 50% 38%,#c65a41,#8a2b1e 70%);border:3px solid #e8c46a;box-shadow:0 3px 6px rgba(0,0,0,.45),inset 0 0 0 3px rgba(0,0,0,.18);cursor:pointer;z-index:2;transform:translate(-50%,-50%)}
+.vbanner{position:absolute;top:24%;width:4.6%;padding:10px 0;text-align:center;z-index:3;background:linear-gradient(180deg,#8a1f14,#a8321f);color:#f7d774;border:2px solid #e8c46a;border-radius:6px;font-family:Georgia,serif;font-weight:700;font-size:clamp(10px,1.35vw,13px);line-height:1.25;letter-spacing:1.5px;writing-mode:vertical-rl;text-orientation:upright;white-space:nowrap;overflow:hidden;transition:opacity .8s;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+.vbanner.left{left:1.2%}
+.vbanner.right{right:1.2%}
+.seat{position:absolute;width:6.6%;aspect-ratio:1.35;border-radius:50%;background:radial-gradient(circle at 50% 38%,#c65a41,#8a2b1e 70%);border:3px solid #e8c46a;box-shadow:0 3px 6px rgba(0,0,0,.45),inset 0 0 0 3px rgba(0,0,0,.18);cursor:pointer;z-index:2;transform:translate(-50%,-50%)}
 .seat.taken{cursor:default;opacity:.92}
-.aisle{position:absolute;left:46%;top:60%;width:8%;height:38%;background:rgba(255,244,200,.18);border-radius:8px;cursor:pointer;z-index:1}
+.aisle{position:absolute;left:46%;top:70%;width:8%;height:28%;background:rgba(255,244,200,.18);border-radius:8px;cursor:pointer;z-index:1}
 .char{position:absolute;width:52px;text-align:center;z-index:6;transform:translate(-50%,-100%);transition:left .5s ease,top .5s ease;pointer-events:none}
 .char .nametag{display:inline-block;background:#1e3a5f;border:1px solid #e8c46a;color:#fff;font-size:10px;line-height:1.25;padding:2px 7px;border-radius:999px;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.5)}
 .char.me .nametag{border-width:2px;background:#274b7a}
@@ -265,7 +265,7 @@ footer{text-align:center;color:#7a6a52;font-size:13px;padding:26px 10px;line-hei
 </p>
 <p class="muted" id="serverStatus">Chưa kết nối — bạn vẫn vào chánh điện, dâng hương, vái lạy, thiền và thỉnh chuông được một mình.</p>
 <p><b>Lời chúc khi khán giả TikTok tặng quà:</b> khi có người tặng quà trong phòng live TikTok <b>Phong Thủy An Nhiên</b>, chương trình cầu nối (hoặc server chùa) chỉ cần gửi sự kiện <i>tiktok_gift</i> qua Socket.io — hoặc gọi <i>window.hienLoiChucQuaTang({ ten: "Tên người tặng", qua: "Tên món quà" })</i>, hoặc <i>postMessage</i> một gói <i>{ type: "tiktok_gift", name, gift }</i> vào trang — một <b>cuốn thư chúc lành sẽ hiện ngay giữa chánh điện</b> kèm tiếng chuông, ghi rõ tên người tặng và món quà, để cả phòng live cùng đọc được. Nhiều quà đến cùng lúc sẽ hiện lần lượt, không mất lời chúc nào. Kèm theo đó, một nhãn nhỏ <b>“Cầu Bình An – {tên} tặng {quà}”</b> hiện trong sân chùa ngay dưới chánh điện.</p>
-<p><b>Băng rôn hồi hướng + giọng đọc:</b> khi quà tặng kèm lời cầu (<i>wish</i>), trang hiện băng rôn đỏ giữa chánh điện — “{tên} dâng hương Tam Bảo lần thứ {n}. Nguyện đem công đức này hồi hướng cho {lời cầu}.” — và đọc to tên người đó cùng lời cầu bằng giọng nói tiếng Việt (nút “🔊 Đọc tên” bật/tắt). Cầu gì thì đọc đúng cái đó; không có lời cầu thì đọc lời chúc mặc định. Quà dâng hương (tên quà có chữ “hương”/“dâng”) luôn hiện băng rôn hồi hướng và đếm số lần dâng của từng người. Người mới vào chùa cũng được giọng đọc chào mừng theo tên kèm một câu chúc bình an.</p>
+<p><b>Băng rôn hồi hướng + giọng đọc:</b> khi quà tặng kèm lời cầu (<i>wish</i>), trang hiện băng rôn đỏ giữa chánh điện — “{tên} dâng hương Tam Bảo lần thứ {n}. Nguyện đem công đức này hồi hướng cho {lời cầu}.” — và đọc to tên người đó cùng lời cầu bằng giọng nói tiếng Việt (nút “🔊 Đọc tên” bật/tắt). Cầu gì thì đọc đúng cái đó; không có lời cầu thì đọc lời chúc mặc định. Quà dâng hương (tên quà có chữ “hương”/“dâng”) luôn hiện băng rôn hồi hướng và đếm số lần dâng của từng người. Người mới vào chùa cũng được giọng đọc chào mừng theo tên kèm một câu chúc bình an. Cầu nối TikTok còn gửi sự kiện <i>tiktok_join</i> khi có người mới vào xem live để cả chùa nghe chào mừng.</p>
 <p><b>Bia công đức</b> (tấm bia đá ở góc phải chánh điện, đối diện với chuông ở góc trái): server tính điểm từ quà tặng trên TikTok Live (có số xu thì tính theo xu) và gửi xuống qua sự kiện <i>merit_board</i> với dữ liệu <i>{ entries: [{ name, points }] }</i> ngay khi kết nối và mỗi khi điểm thay đổi — trang chỉ lắng nghe và vẽ lại bảng xếp hạng tối đa 10 dòng, điểm cao xếp trước, không tự cộng điểm.</p>
 </section>
 
@@ -376,7 +376,7 @@ const users = new Map();
 let myPos = { x: 50, y: 88 }, mySeat = null, meditating = false, meditateStart = 0, medInterval = null;
 let knockTotal = 0, chatUnread = 0, chatOpen = false;
 const SEAT_COLS = [15, 27, 39, 61, 73, 85];
-const SEAT_ROWS = [66, 74, 82, 90];
+const SEAT_ROWS = [72, 79, 86, 93];
 const SEATS = [];
 SEAT_COLS.forEach((x) => SEAT_ROWS.forEach((y) => SEATS.push({ x, y })));
 
@@ -452,7 +452,7 @@ function emitMove(action) {
 function moveTo(x, y, action) {
   mySeat = null;
   if (meditating) stopMeditate(true);
-  myPos = { x: Math.max(4, Math.min(96, x)), y: Math.max(58, Math.min(95, y)) };
+  myPos = { x: Math.max(4, Math.min(96, x)), y: Math.max(66, Math.min(95, y)) };
   renderMe(action || "đang đi dạo");
   emitMove();
 }
@@ -506,7 +506,7 @@ $("meditateBtn").addEventListener("click", () => {
 });
 $("incenseBtn").addEventListener("click", () => {
   mySeat = null; if (meditating) stopMeditate(true);
-  myPos = { x: 50, y: 62 };
+  myPos = { x: 50, y: 70 };
   renderMe("đang dâng hương");
   if (socket && connected) socket.emit("offer_incense");
   emitMove("đang dâng hương");
@@ -515,7 +515,7 @@ $("incenseBtn").addEventListener("click", () => {
 });
 $("bowBtn").addEventListener("click", () => {
   mySeat = null; if (meditating) stopMeditate(true);
-  myPos = { x: 50, y: 68 };
+  myPos = { x: 50, y: 72 };
   renderMe("đang vái lạy");
   if (socket && connected) socket.emit("bow");
   emitMove("đang vái lạy");
@@ -612,6 +612,12 @@ function connectSocket() {
     addChatSys((u.gender === "nu" ? "♀ " : "♂ ") + u.name + " — Phật tử " + (u.gender === "nu" ? "nữ" : "nam") + " vừa vào chùa.");
     logActivity((u.gender === "nu" ? "♀ " : "♂ ") + esc(u.name) + " vừa vào chùa.");
     renderChars();
+  });
+  socket.on("tiktok_join", (d) => {
+    if (!d || !d.name) return;
+    addChatSys("👋 " + d.name + " vừa vào xem live TikTok.");
+    logActivity("👋 " + esc(d.name) + " vừa vào xem live TikTok.");
+    speakText("Chào mừng " + d.name + " vừa vào xem live. Chúc " + d.name + " thân tâm an lạc, vạn sự bình an.");
   });
   socket.on("user_moved", (u) => {
     if (!u || u.id === socket.id) return;
