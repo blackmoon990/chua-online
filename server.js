@@ -26,6 +26,18 @@ app.get("/assets/donate-vietqr.png", (req, res) => {
 app.get("/hall-bg.jpg", (req, res) => {
   res.sendFile(path.join(__dirname, "hall-bg.jpg"));
 });
+const SPRITES = ["phat-tu-nam.png", "phat-tu-nu.png", "phat-tu-di.png", "phat-tu-nam-quy.png", "phat-tu-nu-khan.png"];
+app.get("/phat-tu-:name.png", (req, res) => {
+  const f = "phat-tu-" + req.params.name + ".png";
+  if (!SPRITES.includes(f)) return res.status(404).end();
+  res.sendFile(path.join(__dirname, f));
+});
+app.get("/su-thay.png", (req, res) => {
+  res.sendFile(path.join(__dirname, "su-thay.png"));
+});
+app.get("/chu-tieu.png", (req, res) => {
+  res.sendFile(path.join(__dirname, "chu-tieu.png"));
+});
 
 const users = new Map(); // socketId -> { id, name, gender, x, y, action, meditating, spot }
 const meritBoard = new Map(); // name -> points

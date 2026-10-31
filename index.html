@@ -37,19 +37,22 @@ button.small{padding:7px 12px;font-size:13px}
 .char{position:absolute;width:60px;text-align:center;z-index:6;transform:translate(-50%,-100%);transition:left .5s ease,top .5s ease;pointer-events:none}
 .char .nametag{display:inline-block;background:#1e3a5f;border:1px solid #e8c46a;color:#fff;font-size:10px;line-height:1.25;padding:2px 7px;border-radius:999px;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.5)}
 .char.me .nametag{border-width:2px;background:#274b7a}
-.char .fig{width:40px;height:56px;margin:2px auto 0}
-.char .fig svg{width:40px;height:56px;display:block}
-.char .halo{position:absolute;left:50%;top:16px;transform:translateX(-50%);width:52px;height:52px;border:3px solid rgba(255,215,90,.95);border-radius:50%;box-shadow:0 0 16px rgba(255,215,90,.9);display:none;z-index:0}
+.char .fig{margin:2px auto 0}
+.char .fig img{height:76px;display:block;margin:0 auto;animation:figSway 5s ease-in-out infinite}
+@keyframes figSway{0%,100%{transform:rotate(-1deg)}50%{transform:rotate(1deg)}}
+.char .halo{position:absolute;left:50%;top:22px;transform:translateX(-50%);width:46px;height:46px;border:3px solid rgba(255,215,90,.95);border-radius:50%;box-shadow:0 0 16px rgba(255,215,90,.9);display:none;z-index:0}
 .char.meditating .halo{display:block}
 .bgfig{position:absolute;transform:translate(-50%,-100%);z-index:3;opacity:.85;pointer-events:none}
 .bgfig svg{width:34px;height:48px;display:block}
-.bgmove{position:absolute;transform:translate(-50%,-100%);transform-origin:50% 100%;z-index:4;opacity:.92;pointer-events:none}
-.bgmove svg{width:34px;height:48px;display:block}
+.bgmove{position:absolute;transform:translate(-50%,-100%);transform-origin:50% 100%;z-index:4;opacity:.95;pointer-events:none}
+.bgmove img{width:36px;display:block}
+.bgmove .traybox{position:absolute;left:50%;top:33%;transform:translateX(-50%);width:52px;height:11px;border-radius:50%;background:radial-gradient(circle at 13px 4px,#e07830 3px,transparent 3.5px),radial-gradient(circle at 26px 3px,#c0392b 3px,transparent 3.5px),radial-gradient(circle at 39px 4px,#7da05a 3px,transparent 3.5px),linear-gradient(#d9b45c,#b08d3e);box-shadow:0 2px 3px rgba(0,0,0,.4)}
 .bgmove.bow{animation:bgBow 6s ease-in-out infinite}
 .bgmove.sway{animation:bgSway 5s ease-in-out infinite}
+.bgmove.pray{animation:bgSway 6.5s ease-in-out infinite}
 .bgmove.walk{animation:bgWalk 9s ease-in-out infinite}
 .bgmove.tray{animation:bgTray 46s ease-in-out infinite}
-.bgmove.tray svg{animation:bgBob 2.4s ease-in-out infinite}
+.bgmove.tray img{width:42px;animation:bgBob 2.4s ease-in-out infinite}
 @keyframes bgBow{0%,58%,100%{transform:translate(-50%,-100%) scaleY(1)}28%{transform:translate(-50%,calc(-100% + 4px)) scaleY(.85)}}
 @keyframes bgSway{0%,100%{transform:translate(-50%,-100%) rotate(-1.6deg)}50%{transform:translate(-50%,-100%) rotate(1.6deg)}}
 @keyframes bgWalk{0%,100%{transform:translate(calc(-50% - 22px),-100%)}50%{transform:translate(calc(-50% + 22px),calc(-100% - 2px))}}
@@ -106,6 +109,36 @@ button.small{padding:7px 12px;font-size:13px}
 .log{background:#fff8e7;border-left:3px solid #e8c46a;border-radius:6px;padding:8px 12px;font-size:13px;line-height:1.55;margin-top:12px;min-height:42px}
 .guide{font-size:13px;line-height:1.7;color:#6b4a30}
 .guide b{color:#5a2f1d}
+/* ===== Giao diện kiểu live: Phật phát sáng, lư hương cháy, sư thầy chào ===== */
+.buddhaGlow{position:absolute;left:50%;top:1%;transform:translateX(-50%);width:78%;height:34%;z-index:2;pointer-events:none;background:radial-gradient(ellipse at 50% 42%,rgba(255,222,110,.85) 0%,rgba(255,190,60,.45) 34%,rgba(255,170,40,.14) 58%,transparent 72%);animation:glowPulse 6s ease-in-out infinite;mix-blend-mode:screen}
+.buddhaRays{position:absolute;left:50%;top:-14%;transform:translateX(-50%);width:130%;aspect-ratio:1;z-index:2;pointer-events:none;background:repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,220,120,.20) 0deg 6deg,transparent 6deg 18deg);-webkit-mask-image:radial-gradient(circle at 50% 50%,#000 0%,transparent 62%);mask-image:radial-gradient(circle at 50% 50%,#000 0%,transparent 62%);animation:raysSpin 46s linear infinite;opacity:.5}
+@keyframes glowPulse{0%,100%{opacity:.75;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.06)}}
+@keyframes raysSpin{to{transform:translateX(-50%) rotate(360deg)}}
+.burner{position:absolute;left:50%;top:29.2%;transform:translateX(-50%);z-index:5;width:64px;text-align:center;cursor:pointer}
+.burner .flame{width:14px;height:22px;margin:0 auto;background:radial-gradient(circle at 50% 78%,#fff7c4 0%,#ffd94d 38%,#ff8a1e 68%,#e04d12 100%);border-radius:50% 50% 50% 50%/62% 62% 38% 38%;filter:drop-shadow(0 0 10px rgba(255,180,60,.95));animation:flameFlick 1.1s ease-in-out infinite;transform-origin:50% 100%}
+@keyframes flameFlick{0%,100%{transform:scaleY(1) scaleX(1)}30%{transform:scaleY(1.14) scaleX(.92) rotate(-2deg)}60%{transform:scaleY(.9) scaleX(1.06) rotate(2deg)}}
+.burner .ember{width:44px;height:7px;margin:1px auto 0;background:radial-gradient(ellipse,#ffb347,#b33a10);border-radius:50%;box-shadow:0 0 12px 4px rgba(255,150,50,.55)}
+.burner .bsmoke{position:absolute;left:50%;bottom:100%;width:8px;height:26px;transform:translateX(-50%);background:linear-gradient(180deg,transparent,rgba(255,255,255,.55));filter:blur(3px);border-radius:50%;animation:burnSmoke 3.4s ease-in infinite}
+@keyframes burnSmoke{0%{transform:translateX(-50%) translateY(6px) scaleX(1);opacity:0}30%{opacity:.8}100%{transform:translateX(calc(-50% - 8px)) translateY(-20px) scaleX(1.8);opacity:0}}
+.burner.flare .flame{animation-duration:.55s}
+.burner.flare .ember{box-shadow:0 0 20px 9px rgba(255,150,50,.8)}
+.greeter{position:absolute;bottom:23%;z-index:6;text-align:center;pointer-events:none;animation:greetSway 7s ease-in-out infinite}
+.greeter img{display:block;margin:0 auto}
+.greeter small{display:block;color:#fff;font-size:10px;text-shadow:0 1px 3px #000;margin-top:1px}
+.greeter .hello{position:absolute;left:50%;bottom:calc(100% + 2px);transform:translateX(-50%);background:#fff;color:#5a2f1d;font-size:11px;padding:4px 9px;border-radius:10px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.35);display:none}
+.greeter .hello.show{display:block}
+.greeter.bowing{animation:greetBow 1.6s ease}
+@keyframes greetSway{0%,100%{transform:rotate(-1deg)}50%{transform:rotate(1deg)}}
+@keyframes greetBow{0%,100%{transform:rotate(0)}40%{transform:rotate(7deg) scaleY(.94)}}
+.greeter.left{left:1.5%}
+.greeter.right{right:1.5%}
+.liveStatus{position:absolute;left:50%;top:9.5%;transform:translateX(-50%);z-index:4;pointer-events:none;text-align:center;width:max-content;max-width:94%;color:#fff;font-size:12px;text-shadow:0 1px 4px #000;white-space:nowrap;overflow:hidden;background:rgba(43,32,22,.5);border:1px solid rgba(232,196,106,.6);border-radius:999px;padding:3px 12px}
+.liveStatus b{color:#ffd94d}
+.cmdPanel{margin-top:12px;background:#fffdf6;border:1px solid #e6d3a8;border-radius:12px;padding:12px}
+.cmdPanel h3{margin:0 0 4px;font-size:16px}
+.cmdPanel p{margin:0 0 8px;font-size:13px;color:#7a5c44}
+.cmdChips{display:flex;flex-wrap:wrap;gap:7px}
+.cmdChips button{padding:8px 12px;font-size:13px;border-radius:999px}
 </style>
 </head>
 <body>
@@ -209,11 +242,17 @@ footer{text-align:center;color:#7a6a52;font-size:13px;padding:26px 10px;line-hei
 <div class="hallTitle"><b>✦ Cầu Bình An ✦</b><small id="hallSub">Khách trên live TikTok bình luận để vào lễ Phật cùng mọi người</small></div>
 <div class="donateBox" id="donateBox" role="button" aria-label="Mở hòm công đức để xem mã QR">🧧<br><b>Hòm Công Đức</b>Ấn để mở mã QR</div>
 <div class="aisle" id="aisle" title="Chạm vào lối đi để đi dạo"></div>
+<div class="buddhaRays" aria-hidden="true"></div>
+<div class="buddhaGlow" aria-hidden="true"></div>
 <div class="smokePlume" id="smokePlume"><i></i><i></i><i></i></div>
+<div class="liveStatus" id="liveStatus">🕐 <b id="leTime">0 phút</b> đang lễ ✦ Công đức: <b id="meritTotal">0</b></div>
+<div class="burner" id="burnerEl" title="Lư hương đang cháy — chạm để dâng hương"><div class="bsmoke"></div><div class="flame"></div><div class="ember"></div></div>
+<div class="greeter left" id="greeterLeft"><span class="hello" id="helloLeft"></span><img src="su-thay.png" alt="Sư thầy đứng chắp tay chào" style="width:56px"><small>Sư thầy</small></div>
+<div class="greeter right" id="greeterRight"><span class="hello" id="helloRight"></span><img src="chu-tieu.png" alt="Chú tiểu đứng chắp tay chào" style="width:46px"><small>Chú tiểu</small></div>
 <div class="bell" id="bellEl" title="Thỉnh chuông"><span class="b">🔔</span><small>Chuông chùa</small></div>
 <div class="monk" id="monkEl"><div class="mfig">🧘<span class="arm">🥢</span></div><div class="mo">🪵</div><small>Thầy gõ mõ</small></div>
 <div class="monk monk2"><div class="mfig">🧘</div><small>Thầy tọa thiền</small></div>
-<div class="merit" id="meritBoard"><b>BIA CÔNG ĐỨC</b><div id="meritRows">Chưa có công đức — tặng quà trên live TikTok để ghi danh.</div></div>
+<div class="merit" id="meritBoard"><b>🏆 Bảng Công Đức</b><div id="meritRows">Chưa có công đức — tặng quà trên live TikTok để ghi danh.</div></div>
 <div id="bgMovers" aria-hidden="true"></div>
 <div id="chars"></div>
 <div class="breath" id="breathBubble">Hít vào…</div>
@@ -221,13 +260,25 @@ footer{text-align:center;color:#7a6a52;font-size:13px;padding:26px 10px;line-hei
 <div class="dedication" id="dedication"></div>
 <div class="giftLabel" id="giftLabel" style="display:none"></div>
 </div>
+<div class="cmdPanel" id="cmdPanel">
+<h3>🙏 Cùng tham gia</h3>
+<p>Chạm một lời dưới đây để cùng lễ Phật — gõ đúng câu lệnh trong khung trò chuyện cũng có tác dụng như vậy.</p>
+<div class="cmdChips">
+<button data-cmd="xin xăm">🎋 Xin xăm</button>
+<button data-cmd="xin xăm tình duyên">💞 Xin xăm tình duyên</button>
+<button data-cmd="cầu an">🕯️ Cầu an + tên</button>
+<button data-cmd="A Di Đà Phật">📿 A Di Đà Phật</button>
+<button data-cmd="cầu duyên">💐 Cầu duyên</button>
+<button data-cmd="cầu tài">🧧 Cầu tài</button>
+</div>
+</div>
 <div class="actions">
 <button id="incenseBtn">🪔 Dâng Hương</button>
 <button id="bowBtn">🙏 Vái Lạy</button>
 <button id="meditateBtn">🧘 Tọa Thiền</button>
 <button id="bellBtn">🔔 Thỉnh Chuông</button>
 <button id="knockBtn">🪵 Gõ Mõ<span class="badge" id="knockCount" style="display:none">0</span></button>
-<button id="musicToggleBtn">🎵 Nhạc thiền: Bật</button>
+<button id="musicToggleBtn">🎵 Bật nhạc thiền</button>
 <button id="voiceToggleBtn" class="ghost" style="background:#f3e6c8;color:#6b4423">🔊 Đọc tên: Bật</button>
 <select id="voiceSelect" title="Chọn giọng đọc tiếng Việt — nếu không thấy giọng tiếng Việt, cài thêm gói giọng nói tiếng Việt trong Settings của Windows rồi mở lại trang" style="max-width:180px;padding:7px 6px;border-radius:8px;border:1px solid #c9a86a;background:#fff;color:#5a2f1d;font-size:12px"></select>
 <span id="voiceWarn" style="display:none;max-width:280px;font-size:12px;color:#a33"></span>
@@ -255,9 +306,8 @@ footer{text-align:center;color:#7a6a52;font-size:13px;padding:26px 10px;line-hei
 
 <section class="card">
 <h2>🤝 Đồng hành cùng các Phật tử khác</h2>
-<p>Trang này nói chuyện với server Node.js + Socket.io (các sự kiện <i>move</i>, <i>meditate</i>, <i>ring_bell</i>, <i>offer_incense</i>, <i>bow</i>…). Chạy server đó trên máy của bạn (mặc định cổng 3000), rồi kết nối tại đây để thấy mọi người cùng di chuyển, dâng hương, vái lạy, tọa thiền và nghe chuông trong thời gian thực.</p>
-<p>Khi kết nối, trang gửi kèm <b>tên và giới tính bạn đã đặt ở cổng vào</b> (sự kiện <i>set_profile</i> và trong mỗi lần <i>move</i>), đồng thời đọc tên/giới tính từ <i>current_users</i>, <i>new_user</i> và <i>user_moved</i> — nên bảng tên trên đầu và màu áo nam/nữ của mỗi Phật tử đều hiện đúng cho cả chùa.</p>
-<p>Nút <b>💬 Trò chuyện</b> ở góc dưới bên phải mở khung chat: tin nhắn gửi qua sự kiện <i>chat_message</i> kèm tên và giới tính của người gửi, hiện trong khung chat và thành <b>bong bóng thoại trên đầu nhân vật</b>. Khi một Phật tử rời đi (sự kiện <i>user_left</i>), <b>nhân vật của họ biến mất khỏi chánh điện ngay</b> và số người đang ở chùa giảm xuống tương ứng.</p>
+<p>Vào chùa chung, bạn sẽ thấy mọi người cùng di chuyển, dâng hương, vái lạy, tọa thiền, thỉnh chuông và trò chuyện trong thời gian thực. Bảng tên và màu áo của mỗi Phật tử hiện đúng cho cả chùa; ai rời đi thì nhân vật của họ cũng rời khỏi chánh điện.</p>
+<p>Khi có người tặng quà trong phòng live TikTok, lời chúc kèm tên người tặng và món quà sẽ hiện giữa chánh điện cho cả phòng cùng đọc, kèm giọng đọc tên và lời cầu.</p>
 <label for="serverUrl">Địa chỉ server chùa</label>
 <input type="text" id="serverUrl" autocomplete="off">
 <p style="margin-top:12px">
@@ -265,9 +315,6 @@ footer{text-align:center;color:#7a6a52;font-size:13px;padding:26px 10px;line-hei
 <button id="giftDemoBtn" class="ghost">🎁 Xem thử lời chúc tặng quà</button>
 </p>
 <p class="muted" id="serverStatus">Chưa kết nối — bạn vẫn vào chánh điện, dâng hương, vái lạy, thiền và thỉnh chuông được một mình.</p>
-<p><b>Lời chúc khi khán giả TikTok tặng quà:</b> khi có người tặng quà trong phòng live TikTok <b>Phong Thủy An Nhiên</b>, chương trình cầu nối (hoặc server chùa) chỉ cần gửi sự kiện <i>tiktok_gift</i> qua Socket.io — hoặc gọi <i>window.hienLoiChucQuaTang({ ten: "Tên người tặng", qua: "Tên món quà" })</i>, hoặc <i>postMessage</i> một gói <i>{ type: "tiktok_gift", name, gift }</i> vào trang — một <b>cuốn thư chúc lành sẽ hiện ngay giữa chánh điện</b> kèm tiếng chuông, ghi rõ tên người tặng và món quà, để cả phòng live cùng đọc được. Nhiều quà đến cùng lúc sẽ hiện lần lượt, không mất lời chúc nào. Kèm theo đó, một nhãn nhỏ <b>“Cầu Bình An – {tên} tặng {quà}”</b> hiện trong sân chùa ngay dưới chánh điện.</p>
-<p><b>Băng rôn hồi hướng + giọng đọc:</b> khi quà tặng kèm lời cầu (<i>wish</i>), trang hiện băng rôn đỏ giữa chánh điện — “{tên} dâng hương Tam Bảo lần thứ {n}. Nguyện đem công đức này hồi hướng cho {lời cầu}.” — và đọc to tên người đó cùng lời cầu bằng giọng nói tiếng Việt (nút “🔊 Đọc tên” bật/tắt). Cầu gì thì đọc đúng cái đó; không có lời cầu thì đọc lời chúc mặc định. Quà dâng hương (tên quà có chữ “hương”/“dâng”) luôn hiện băng rôn hồi hướng và đếm số lần dâng của từng người. Người mới vào chùa cũng được giọng đọc chào mừng theo tên kèm một câu chúc bình an. Cầu nối TikTok còn gửi sự kiện <i>tiktok_join</i> khi có người mới vào xem live để cả chùa nghe chào mừng.</p>
-<p><b>Bia công đức</b> (tấm bia đá ở góc phải chánh điện, đối diện với chuông ở góc trái): server tính điểm từ quà tặng trên TikTok Live (có số xu thì tính theo xu) và gửi xuống qua sự kiện <i>merit_board</i> với dữ liệu <i>{ entries: [{ name, points }] }</i> ngay khi kết nối và mỗi khi điểm thay đổi — trang chỉ lắng nghe và vẽ lại bảng xếp hạng tối đa 10 dòng, điểm cao xếp trước, không tự cộng điểm.</p>
 </section>
 
 <section class="card">
@@ -407,55 +454,38 @@ function autoPlaceMe() {
   renderMe("đang lễ Phật");
   emitMove("đang lễ Phật");
 }
-function figureSVG(female, seated) {
-  const robe = female ? "#a89bb8" : "#7d94a8";
-  const trim = female ? "#8a7d9e" : "#5f768a";
-  const skin = "#f2c89b";
-  const hair = "#2b2b2b";
-  const folds = '<path d="M26,40 Q24,58 26,76 M38,40 Q40,58 38,76" stroke="' + trim + '" stroke-width="1" fill="none" opacity="0.3"/>' +
-    '<path d="M32,36 L32,78" stroke="' + trim + '" stroke-width="1" opacity="0.25"/>';
-  const collar = '<path d="M26,32 Q32,29 38,32 L38,37 Q32,34 26,37 Z" fill="' + trim + '"/>';
-  const body = seated
-    ? '<path d="M11,79 Q11,58 24,49 L40,49 Q53,58 53,79 Q32,84 11,79 Z" fill="' + robe + '"/>' +
-      '<path d="M24,28 Q32,23 40,28 L43,52 L21,52 Z" fill="' + robe + '"/>' +
-      '<path d="M24,58 Q22,68 24,77 M40,58 Q42,68 40,77" stroke="' + trim + '" stroke-width="1" fill="none" opacity="0.3"/>' + collar
-    : '<path d="' + (female ? "M22,34 Q32,29 42,34 L48,80 Q32,84 16,80 Z" : "M23,34 Q32,29 41,34 L45,80 Q32,84 19,80 Z") + '" fill="' + robe + '"/>' +
-      folds + collar +
-      '<path d="M23,40 Q26,52 31,56 M41,40 Q38,52 33,56" stroke="' + trim + '" stroke-width="5" fill="none" stroke-linecap="round"/>';
-  const headBack = '<circle cx="32" cy="19" r="10" fill="' + skin + '"/>';
-  const hairBack = female
-    ? '<circle cx="32" cy="16" r="10.5" fill="' + hair + '"/>' +
-      '<circle cx="32" cy="30" r="4.5" fill="' + hair + '"/>' +
-      '<circle cx="28" cy="27.5" r="1.7" fill="#e89bb0"/><circle cx="36" cy="27.5" r="1.7" fill="#e89bb0"/><circle cx="32" cy="25.5" r="1.7" fill="#e89bb0"/><circle cx="32" cy="28.5" r="1.4" fill="#f5d76e"/>'
-    : '<circle cx="32" cy="16" r="10.5" fill="' + hair + '"/>';
-  return '<svg viewBox="0 0 64 84" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
-    '<ellipse cx="32" cy="81" rx="15" ry="3" fill="rgba(0,0,0,0.25)"/>' + body + headBack + hairBack + '</svg>';
+// Ảnh Phật tử thật (áo tràng tay rộng, nhìn từ phía sau) — đã tách nền, chuyển động bằng CSS.
+function figureImg(female, src) {
+  return '<img src="' + (src || (female ? "phat-tu-nu.png" : "phat-tu-nam.png")) + '" alt="">';
 }
 function charFigure(u) {
   const female = u.gender === "nu";
   return '<div class="halo"></div><span class="nametag">' + esc((female ? "♀ " : "♂ ") + u.name + " — Phật tử " + (female ? "nữ" : "nam") + (u.action && u.action !== "đang đứng" ? " · " + esc(u.action) : "")) + '</span>' +
-    '<div class="fig">' + figureSVG(female, !!u.meditating) + '</div>';
-}
-// Hình Phật tử nhìn từ phía sau (cùng hướng với các Phật tử trong ảnh nền): tóc, lưng áo, không thấy mặt.
-function figureSVGBack(female, withTray) {
-  const svg = figureSVG(female, false);
-  if (!withTray) return svg;
-  const tray = '<ellipse cx="32" cy="54" rx="18" ry="5" fill="#b08d3e"/><ellipse cx="32" cy="52.5" rx="18" ry="5" fill="#d9b45c"/>' +
-    '<circle cx="24" cy="48" r="3" fill="#e07830"/><circle cx="32" cy="46.5" r="3" fill="#c0392b"/><circle cx="40" cy="48" r="3" fill="#7da05a"/>' +
-    '<path d="M28,46 L28,40 M36,46 L36,40" stroke="#8a6a2f" stroke-width="1.6"/>';
-  return svg.replace('</svg>', tray + '</svg>');
+    '<div class="fig">' + figureImg(female) + '</div>';
 }
 
 // Phật tử chuyển động trong điện: người khấn vái, người đi lại, người đứng chắp tay, người bưng mâm lễ.
 const BG_MOVERS = [
-  { x: 8, y: 56, female: true, act: "bow", dur: 6 },
-  { x: 22, y: 66, female: false, act: "walk", dur: 9 },
-  { x: 7, y: 82, female: false, act: "sway", dur: 5 },
-  { x: 26, y: 88, female: true, act: "bow", dur: 7.5 },
-  { x: 92, y: 56, female: false, act: "sway", dur: 5.5 },
-  { x: 78, y: 66, female: true, act: "walk", dur: 10 },
-  { x: 93, y: 82, female: true, act: "bow", dur: 6.8 },
-  { x: 74, y: 88, female: false, act: "sway", dur: 4.6 },
+  { x: 8, y: 56, female: true, act: "bow", dur: 6, w: 28 },
+  { x: 22, y: 66, female: false, act: "walk", dur: 9, w: 32 },
+  { x: 7, y: 82, female: false, act: "sway", dur: 5, w: 36 },
+  { x: 26, y: 88, female: true, act: "bow", dur: 7.5, w: 40 },
+  { x: 92, y: 56, female: false, act: "sway", dur: 5.5, w: 28 },
+  { x: 78, y: 66, female: true, act: "walk", dur: 10, w: 32 },
+  { x: 93, y: 82, female: true, act: "bow", dur: 6.8, w: 36 },
+  { x: 74, y: 88, female: false, act: "sway", dur: 4.6, w: 40 },
+  { x: 18, y: 58, female: false, act: "sway", dur: 5.2, w: 28 },
+  { x: 30, y: 56, female: true, act: "pray", dur: 6.5, w: 28 },
+  { x: 70, y: 56, female: false, act: "bow", dur: 6.4, w: 28 },
+  { x: 90, y: 62, female: true, act: "pray", dur: 5.8, w: 30 },
+  { x: 12, y: 70, female: true, act: "walk", dur: 8, w: 34 },
+  { x: 88, y: 70, female: false, act: "walk", dur: 8.6, w: 34 },
+  { x: 40, y: 74, female: false, act: "bow", dur: 7, w: 36 },
+  { x: 60, y: 74, female: true, act: "bow", dur: 6.2, w: 36 },
+  { x: 47, y: 66, female: false, act: "walk", dur: 11, w: 32 },
+  { x: 53, y: 82, female: true, act: "walk", dur: 12, w: 38 },
+  { x: 4, y: 92, female: true, act: "pray", dur: 6.5, w: 46 },
+  { x: 96, y: 92, female: false, act: "bow", dur: 7.8, w: 46 },
 ];
 function buildBgMovers() {
   const wrap = $("bgMovers");
@@ -465,14 +495,20 @@ function buildBgMovers() {
     d.className = "bgmove " + f.act;
     d.style.left = f.x + "%"; d.style.top = f.y + "%";
     d.style.animationDuration = f.dur + "s";
-    d.style.animationDelay = (i * 0.9) + "s";
-    d.innerHTML = figureSVGBack(f.female, false);
+    d.style.animationDelay = (i * 0.7) + "s";
+    let src;
+    if (f.act === "walk") src = "phat-tu-di.png";
+    else if (f.act === "bow") src = f.female ? "phat-tu-nu-khan.png" : "phat-tu-nam-quy.png";
+    else if (f.act === "pray") src = f.female ? "phat-tu-nu-khan.png" : "phat-tu-nam.png";
+    d.innerHTML = figureImg(f.female, src);
+    const img = d.querySelector("img");
+    if (img && f.w) img.style.width = f.w + "px";
     wrap.appendChild(d);
   });
   const t = document.createElement("div");
   t.className = "bgmove tray";
   t.style.left = "9%"; t.style.top = "93%";
-  t.innerHTML = figureSVGBack(false, true);
+  t.innerHTML = figureImg(false, "phat-tu-di.png") + '<div class="traybox"></div>';
   wrap.appendChild(t);
 }
 function renderChars() {
@@ -558,6 +594,7 @@ $("incenseBtn").addEventListener("click", () => {
   mySpot = null; if (meditating) stopMeditate(true);
   myPos = { x: 50, y: 50 };
   renderMe("đang dâng hương");
+  flareBurner();
   if (socket && connected) socket.emit("offer_incense");
   emitMove("đang dâng hương");
   logActivity("Bạn đang dâng hương trước lư hương — khói hương bay lên bàn thờ. 🙏");
@@ -618,7 +655,7 @@ $("enterBtn").addEventListener("click", () => {
   setTimeout(autoPlaceMe, 700);
   const desc = profile.gender === "nu" ? "áo lam hồng tím, tóc dài búi cao cài hoa sen, dáng áo xòe như váy dài" : "áo lam xám xanh, tóc ngắn, dáng áo thẳng";
   logActivity("Đã vào chùa với tên “" + esc(name) + "” — Phật tử " + (profile.gender === "nu" ? "nữ" : "nam") + ": bảng tên “" + esc(label) + "” đã hiện trên đầu nhân vật của bạn (" + desc + ").");
-  startAudioOnGesture();
+  unlockAudio();
 });
 /* ============ Socket.io ============ */
 function setConnUI(on) {
@@ -726,6 +763,7 @@ function receiveChat(m) {
   if (!chatOpen) bumpChatBadge();
   const charId = mine ? "me" : m.id;
   showBubble(charId, m.text);
+  handleCommand(m.text, m.name || "Phật tử");
 }
 $("chatFab").addEventListener("click", () => {
   chatOpen = !chatOpen;
@@ -740,11 +778,11 @@ $("chatForm").addEventListener("submit", (e) => {
   $("chatInput").value = "";
   if (socket && connected) socket.emit("chat_message", { text });
   else receiveChat({ id: "me", name: profile.name, text });
-  startAudioOnGesture();
+  unlockAudio();
 });
 /* ============ Âm thanh ============ */
 let AC = null, masterGain = null, waNodes = [], waTimers = [];
-let musicOn = true, ytPlayer = null, ytReady = false, ytPendingId = null, currentYT = null;
+let musicOn = true, ytPlayer = null, ytReady = false, ytPendingId = null, currentYT = null, musicStarted = false;
 function ac() {
   if (!AC) {
     AC = new (window.AudioContext || window.webkitAudioContext)();
@@ -808,7 +846,7 @@ function startGom() {
   waTimers.push(setInterval(() => { knockSound(); tone(220, 2.5, 0.05); }, 2000));
 }
 const MUSIC_NOTES = {
-  annhien: "Nhạc thiền thư giãn, phát qua trình phát YouTube chính thức và tự lặp lại; nút bật/tắt và thanh âm lượng ở trên điều khiển luôn nguồn này. Nhạc chỉ bắt đầu sau lần chạm/bấm đầu tiên (quy định của trình duyệt). Nếu video bị chặn nhúng hoặc lỗi tải, chùa sẽ tự chuyển về kiểu Thiền tịnh tâm có sẵn.",
+  annhien: "Nhạc thiền thư giãn, phát qua trình phát YouTube chính thức và tự lặp lại; nút bật/tắt và thanh âm lượng ở trên điều khiển luôn nguồn này. Nhạc chỉ bắt đầu khi bạn bấm nút bật nhạc hoặc đổi kiểu nhạc. Nếu video bị chặn nhúng hoặc lỗi tải, chùa sẽ tự chuyển về kiểu Thiền tịnh tâm có sẵn.",
   tinh: "Thiền tịnh tâm: không lời, không nhịp dồn — nền trầm lên xuống theo nhịp thở ~14 giây, hợp âm trôi chậm và chuông bát vang thưa rồi tan. Hãy ngồi xuống đệm, để âm lượng vừa nghe và thở chậm theo nhạc.",
   gom: "Tụng kinh · gõ mõ: tiếng tụng trầm đều kèm nhịp mõ mỗi 2 giây, như đang dự một thời kinh trong điện.",
   daibi: "Chú Đại Bi 108 biến — bản tụng của Thầy Thích Trí Thoát, phát qua trình phát YouTube chính thức và tự lặp lại. Nếu video bị chặn nhúng hoặc lỗi tải, chùa sẽ tự chuyển về kiểu Thiền tịnh tâm có sẵn.",
@@ -863,12 +901,23 @@ function applyMusicStyle() {
     else if (style === "gom") startGom();
   }
 }
+function unlockAudio() {
+  try { ac(); } catch (e) {}
+}
 function startAudioOnGesture() {
   try { ac(); } catch (e) {}
+  musicStarted = true;
   if (musicOn) applyMusicStyle();
 }
 $("musicStyle").addEventListener("change", () => { startAudioOnGesture(); });
 $("musicToggleBtn").addEventListener("click", () => {
+  if (!musicStarted) {
+    musicStarted = true; musicOn = true;
+    $("musicToggleBtn").textContent = "🎵 Nhạc thiền: Bật";
+    startAudioOnGesture();
+    logActivity("Đã bật nhạc nền. Dùng thanh âm lượng để chỉnh to nhỏ.");
+    return;
+  }
   musicOn = !musicOn;
   $("musicToggleBtn").textContent = musicOn ? "🎵 Nhạc thiền: Bật" : "🔇 Nhạc thiền: Tắt";
   if (musicOn) { startAudioOnGesture(); logActivity("Đã bật nhạc nền. Dùng thanh âm lượng để chỉnh to nhỏ."); }
@@ -887,7 +936,7 @@ $("knockBtn").addEventListener("click", () => {
   const monk = $("monkEl");
   monk.classList.remove("tapping"); void monk.offsetWidth; monk.classList.add("tapping");
   logActivity("🪵 Thầy vừa gõ mõ — tiếng mõ vang đều, tâm lắng lại. (Đã gõ " + knockTotal + " tiếng.)");
-  startAudioOnGesture();
+  knockSound();
 });
 setInterval(() => {
   if ($("musicStyle").value !== "gom") return;
@@ -1035,6 +1084,7 @@ function showNextGift() {
     const ded = $("dedication");
     ded.textContent = g.name + " dâng hương Tam Bảo lần thứ " + n + ". Nguyện đem công đức này hồi hướng cho " + wishText + ".";
     ded.classList.add("show");
+    flareBurner();
     bellSound();
     speakText("Cảm ơn " + g.name + " đã dâng hương Tam Bảo lần thứ " + n + ". Nguyện đem công đức này hồi hướng cho " + wishText + ".");
     logActivity("🪔 " + esc(g.name) + " vừa dâng hương Tam Bảo lần thứ " + n + " — hồi hướng cho " + esc(wishText) + ".");
@@ -1072,6 +1122,8 @@ $("giftDemoBtn").addEventListener("click", () => {
 });
 function renderMerit(entries) {
   const box = $("meritRows");
+  meritTotalPoints = (entries || []).reduce((s, e) => s + Number(e.points || 0), 0);
+  renderLiveStatus();
   if (!entries || !entries.length) {
     box.textContent = "Chưa có công đức — tặng quà trên live TikTok để ghi danh.";
     return;
@@ -1098,6 +1150,7 @@ function spawnPetals() {
   }
 }
 const HALL_SUBS = [
+  "Nam mô A Di Đà Phật",
   "Khách trên live TikTok bình luận để vào lễ Phật cùng mọi người",
   "Gieo hạt thiện lành · Gặt quả bình an",
   "Tâm an vạn sự an · Lòng tĩnh phúc tự đến",
@@ -1450,6 +1503,78 @@ $("lunarBtn").addEventListener("click", () => {
   const d = new Date(v + "T12:00:00");
   $("lunarOut").textContent = "Ngày " + d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " dương lịch là " + lunarText(d.getDate(), d.getMonth() + 1, d.getFullYear()) + ".";
 });
+/* ============ Giao diện kiểu live: trạng thái phiên, lệnh chat, chào hỏi ============ */
+const sessionStart = Date.now();
+let meritTotalPoints = 0;
+function renderLiveStatus() {
+  const mins = Math.floor((Date.now() - sessionStart) / 60000);
+  const t = $("leTime"), tot = $("meritTotal");
+  if (t) t.textContent = mins + " phút";
+  if (tot) tot.textContent = meritTotalPoints;
+}
+setInterval(renderLiveStatus, 30000);
+function flareBurner() {
+  const b = $("burnerEl");
+  if (!b) return;
+  b.classList.add("flare");
+  setTimeout(() => b.classList.remove("flare"), 6000);
+}
+$("burnerEl").addEventListener("click", () => { $("incenseBtn").click(); });
+// Lệnh chat kiểu live: xin xăm, cầu an, cầu duyên, cầu tài, niệm Phật.
+function handleCommand(rawText, name) {
+  const text = String(rawText || "").trim().toLowerCase();
+  const who = String(name || "Phật tử").slice(0, 40);
+  if (text === "xin xăm" || text === "xin xăm tình duyên") {
+    const h = [...document.querySelectorAll("section.card h2")].find((x) => x.textContent.indexOf("Gieo Quẻ") >= 0);
+    if (h) h.scrollIntoView({ behavior: "smooth", block: "start" });
+    logActivity("🎋 " + esc(who) + " vừa xin xăm — ống quẻ đang lắc…");
+    setTimeout(drawQue, 700);
+    return true;
+  }
+  if (text === "a di đà phật" || text === "a di da phat" || text === "nam mô a di đà phật" || text === "nam mo a di da phat") {
+    bellSound();
+    logActivity("📿 " + esc(who) + " vừa niệm: Nam mô A Di Đà Phật 🙏");
+    return true;
+  }
+  if (text.indexOf("cầu an") === 0 || text === "cầu duyên" || text === "cầu tài") {
+    const ded = $("dedication");
+    const wish = text.indexOf("cầu an") === 0 ? "gia đạo bình an, khỏe mạnh" : (text === "cầu duyên" ? "duyên lành sớm tới, gia đạo hòa thuận" : "tài lộc hanh thông, làm ăn thuận lợi");
+    ded.textContent = who + " vừa gửi lời: " + String(rawText).trim() + ". Nguyện đem công đức này hồi hướng cho " + wish + ".";
+    ded.classList.add("show");
+    bellSound();
+    speakText("Cảm ơn " + who + " đã gửi lời " + String(rawText).trim() + ". Nguyện đem công đức này hồi hướng cho " + wish + ".");
+    logActivity("🙏 " + esc(who) + " vừa gửi lời: " + esc(String(rawText).trim()) + " — hồi hướng cho " + esc(wish) + ".");
+    setTimeout(() => ded.classList.remove("show"), 8000);
+    return true;
+  }
+  return false;
+}
+document.querySelectorAll(".cmdChips button").forEach((b) => {
+  b.addEventListener("click", () => {
+    const cmd = b.dataset.cmd;
+    const text = cmd === "cầu an" ? "cầu an " + profile.name : cmd;
+    if (socket && connected) socket.emit("chat_message", { text });
+    else receiveChat({ id: "me", name: profile.name, text });
+    unlockAudio();
+  });
+});
+// Sư thầy + chú tiểu đứng chào: cúi chào nhẹ + bong bóng lời chào luân phiên.
+const GREETINGS = ["A Di Đà Phật 🙏", "Chào mừng quý Phật tử quang lâm 🙏", "Nam mô A Di Đà Phật 🙏"];
+let greetIdx = 0;
+function greetOnce() {
+  const g = GREETINGS[greetIdx++ % GREETINGS.length];
+  [["helloLeft", "greeterLeft"], ["helloRight", "greeterRight"]].forEach(([hid, gid], k) => {
+    setTimeout(() => {
+      const h = $(hid), el = $(gid);
+      if (!h || !el) return;
+      h.textContent = g; h.classList.add("show");
+      el.classList.remove("bowing"); void el.offsetWidth; el.classList.add("bowing");
+      setTimeout(() => h.classList.remove("show"), 4200);
+    }, k * 900);
+  });
+}
+setTimeout(greetOnce, 2500);
+setInterval(greetOnce, 12000);
 /* ============ Khởi tạo ============ */
 buildBgMovers();
 renderChars();
@@ -1460,7 +1585,7 @@ renderLunarToday();
 connectSocket();
 let audioStarted = false;
 document.addEventListener("pointerdown", () => {
-  if (!audioStarted) { audioStarted = true; startAudioOnGesture(); }
+  if (!audioStarted) { audioStarted = true; unlockAudio(); }
 }, { passive: true });
 </script>
 </body>
