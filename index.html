@@ -202,7 +202,6 @@ footer{text-align:center;color:#7a6a52;font-size:13px;padding:26px 10px;line-hei
 <div class="monk" id="monkEl"><div class="mfig">🧘<span class="arm">🥢</span></div><div class="mo">🪵</div><small>Thầy gõ mõ</small></div>
 <div class="monk monk2"><div class="mfig">🧘</div><small>Thầy tọa thiền</small></div>
 <div class="merit" id="meritBoard"><b>BIA CÔNG ĐỨC</b><div id="meritRows">Chưa có công đức — tặng quà trên live TikTok để ghi danh.</div></div>
-<div id="bgFigures" aria-hidden="true"></div>
 <div id="chars"></div>
 <div class="breath" id="breathBubble">Hít vào…</div>
 <div class="giftScroll" id="giftScroll"></div>
@@ -426,25 +425,6 @@ function charFigure(u) {
   const female = u.gender === "nu";
   return '<div class="halo"></div><span class="nametag">' + esc((female ? "♀ " : "♂ ") + u.name + " — Phật tử " + (female ? "nữ" : "nam") + (u.action && u.action !== "đang đứng" ? " · " + esc(u.action) : "")) + '</span>' +
     '<div class="fig">' + figureSVG(female, !!u.meditating) + '</div>';
-}
-// Hình Phật tử đứng nền hai bên điện (trang trí, không phải người thật): điện luôn trông đầy như trên live.
-const BG_FIGURES = [
-  { x: 6, y: 50, female: true }, { x: 93, y: 50, female: false },
-  { x: 6, y: 61, female: false }, { x: 93, y: 61, female: true },
-  { x: 6, y: 72, female: true }, { x: 93, y: 72, female: false },
-  { x: 6, y: 83, female: false }, { x: 93, y: 83, female: true },
-];
-function buildBgFigures() {
-  const wrap = $("bgFigures");
-  if (!wrap) return;
-  BG_FIGURES.forEach((f, i) => {
-    const d = document.createElement("div");
-    d.className = "bgfig";
-    d.style.left = f.x + "%"; d.style.top = f.y + "%";
-    d.style.opacity = (i % 2 ? 0.8 : 0.88);
-    d.innerHTML = figureSVG(f.female, false);
-    wrap.appendChild(d);
-  });
 }
 function renderChars() {
   const wrap = $("chars");
@@ -1422,7 +1402,6 @@ $("lunarBtn").addEventListener("click", () => {
   $("lunarOut").textContent = "Ngày " + d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " dương lịch là " + lunarText(d.getDate(), d.getMonth() + 1, d.getFullYear()) + ".";
 });
 /* ============ Khởi tạo ============ */
-buildBgFigures();
 renderChars();
 spawnPetals();
 $("serverUrl").value = window.location.origin;
