@@ -29,28 +29,26 @@ button.small{padding:7px 12px;font-size:13px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
 @media(max-width:600px){.grid2{grid-template-columns:1fr}}
 /* ===== Chánh điện ===== */
-.hall{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;border:3px solid #7a5228;background:#3a2410 url("hall-bg.jpg") center/cover no-repeat}
+.hall{position:relative;width:min(100%,560px);margin:0 auto;aspect-ratio:9/16;border-radius:14px;overflow:hidden;border:3px solid #7a5228;background:#3a2410 url("hall-bg.jpg") center/cover no-repeat}
 .hallTitle{position:absolute;left:50%;top:2%;transform:translateX(-50%);text-align:center;z-index:4;pointer-events:none;width:80%}
 .hallTitle b{font-family:Georgia,serif;font-size:clamp(18px,3.4vw,30px);color:#ffd94d;text-shadow:0 2px 8px #000,0 0 22px rgba(255,200,60,.7);letter-spacing:1px}
 .hallTitle small{display:block;color:#fff;font-size:11px;text-shadow:0 1px 4px #000;margin-top:2px}
-.seat{position:absolute;width:6.6%;aspect-ratio:1.5;border-radius:12px;background:linear-gradient(180deg,#b8442f,#8a2b1e);border:3px solid #e8c46a;box-shadow:0 3px 6px rgba(0,0,0,.45),inset 0 0 0 3px rgba(0,0,0,.18);cursor:pointer;z-index:2;transform:translate(-50%,-50%)}
-.seat.taken{cursor:default;opacity:.92}
-.aisle{position:absolute;left:40%;top:66%;width:20%;height:32%;background:rgba(255,244,200,.10);border-radius:8px;cursor:pointer;z-index:1}
-.char{position:absolute;width:52px;text-align:center;z-index:6;transform:translate(-50%,-100%);transition:left .5s ease,top .5s ease;pointer-events:none}
+.aisle{position:absolute;left:40%;top:44%;width:20%;height:54%;background:rgba(255,244,200,.10);border-radius:8px;cursor:pointer;z-index:1}
+.char{position:absolute;width:60px;text-align:center;z-index:6;transform:translate(-50%,-100%);transition:left .5s ease,top .5s ease;pointer-events:none}
 .char .nametag{display:inline-block;background:#1e3a5f;border:1px solid #e8c46a;color:#fff;font-size:10px;line-height:1.25;padding:2px 7px;border-radius:999px;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.5)}
 .char.me .nametag{border-width:2px;background:#274b7a}
-.char .fig{width:34px;height:46px;margin:2px auto 0;position:relative}
-.char .fig .head{position:absolute;top:0;left:50%;transform:translateX(-50%);width:18px;height:18px;border-radius:50%;background:#f2c89b;z-index:2}
-.char .fig .hair{position:absolute;top:-2px;left:50%;transform:translateX(-50%);width:19px;height:10px;border-radius:9px 9px 4px 4px;background:#2b2b2b;z-index:3}
-.char.female .fig .hair{height:13px;border-radius:9px 9px 7px 7px}
-.char.female .fig .hair::after{content:"";position:absolute;top:-4px;left:50%;transform:translateX(-50%);width:8px;height:8px;border-radius:50%;background:#2b2b2b}
-.char .fig .robe{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:30px;height:29px;border-radius:13px 13px 5px 5px;background:#7d94a8;z-index:1}
-.char.female .fig .robe{background:#b07fa8;width:34px;border-radius:16px 16px 6px 6px}
-.char .fig .arms{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:22px;height:8px;border-radius:4px;background:rgba(0,0,0,.18);z-index:2}
-.char .halo{position:absolute;left:50%;top:16px;transform:translateX(-50%);width:44px;height:44px;border:3px solid rgba(255,215,90,.95);border-radius:50%;box-shadow:0 0 16px rgba(255,215,90,.9);display:none;z-index:0}
+.char .fig{width:40px;height:54px;margin:2px auto 0;position:relative}
+.char .fig .head{position:absolute;top:0;left:50%;transform:translateX(-50%);width:21px;height:21px;border-radius:50%;background:#f2c89b;z-index:2}
+.char .fig .hair{position:absolute;top:-2px;left:50%;transform:translateX(-50%);width:22px;height:12px;border-radius:9px 9px 4px 4px;background:#2b2b2b;z-index:3}
+.char.female .fig .hair{height:15px;border-radius:9px 9px 7px 7px}
+.char.female .fig .hair::after{content:"";position:absolute;top:-4px;left:50%;transform:translateX(-50%);width:9px;height:9px;border-radius:50%;background:#2b2b2b}
+.char .fig .robe{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:36px;height:34px;border-radius:13px 13px 5px 5px;background:#7d94a8;z-index:1}
+.char.female .fig .robe{background:#b07fa8;width:40px;border-radius:16px 16px 6px 6px}
+.char .fig .arms{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:26px;height:9px;border-radius:4px;background:rgba(0,0,0,.18);z-index:2}
+.char .halo{position:absolute;left:50%;top:16px;transform:translateX(-50%);width:52px;height:52px;border:3px solid rgba(255,215,90,.95);border-radius:50%;box-shadow:0 0 16px rgba(255,215,90,.9);display:none;z-index:0}
 .char.meditating .halo{display:block}
-.char.meditating .fig{height:38px}
-.char.meditating .fig .robe{height:24px}
+.char.meditating .fig{height:44px}
+.char.meditating .fig .robe{height:28px}
 .char.bowing .fig{transform:rotate(10deg) scaleY(.92)}
 .speech{position:absolute;left:50%;bottom:calc(100% + 2px);transform:translateX(-50%);background:#fff;color:#333;font-size:11px;line-height:1.3;padding:4px 8px;border-radius:10px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.35);z-index:8}
 .speech::after{content:"";position:absolute;left:50%;bottom:-4px;transform:translateX(-50%);border:5px solid transparent;border-top-color:#fff;border-bottom:0}
@@ -59,20 +57,20 @@ button.small{padding:7px 12px;font-size:13px}
 .bell.ringing .b{animation:swing .7s ease 3}
 .bell small{display:block;color:#fff;font-size:11px;text-shadow:0 1px 3px #000}
 @keyframes swing{0%,100%{transform:rotate(0)}25%{transform:rotate(14deg)}75%{transform:rotate(-14deg)}}
-.merit{position:absolute;right:2%;bottom:4%;z-index:7;width:31%;max-width:250px;background:rgba(43,32,22,.88);color:#f5d98b;border:1px solid #e8c46a;border-radius:8px;padding:7px 9px;font-size:11px;line-height:1.45}
+.merit{position:absolute;right:3%;bottom:3%;z-index:7;width:46%;max-width:260px;background:rgba(43,32,22,.88);color:#f5d98b;border:1px solid #e8c46a;border-radius:8px;padding:7px 9px;font-size:11px;line-height:1.45}
 .merit b{display:block;text-align:center;letter-spacing:2px;font-size:12px}
 .merit .row{display:flex;justify-content:space-between;gap:6px;white-space:nowrap;overflow:hidden}
 .merit .row span:first-child{overflow:hidden;text-overflow:ellipsis}
-.donateBox{position:absolute;left:2.5%;top:9%;z-index:7;background:linear-gradient(180deg,#a8321f,#7c1f12);color:#ffe9a8;border:2px solid #e8c46a;border-radius:10px;padding:8px 10px;text-align:center;cursor:pointer;font-size:12px;line-height:1.35;box-shadow:0 3px 8px rgba(0,0,0,.45);max-width:24%}
+.donateBox{position:absolute;left:3%;top:7%;z-index:7;background:linear-gradient(180deg,#a8321f,#7c1f12);color:#ffe9a8;border:2px solid #e8c46a;border-radius:10px;padding:8px 10px;text-align:center;cursor:pointer;font-size:12px;line-height:1.35;box-shadow:0 3px 8px rgba(0,0,0,.45);max-width:36%}
 .donateBox b{display:block;font-size:13px}
 .petal{position:absolute;top:-14px;z-index:5;width:11px;height:8px;background:rgba(255,183,197,.9);border-radius:60% 40% 60% 40%;pointer-events:none;animation:fall linear infinite}
 @keyframes fall{to{transform:translateY(115%) rotate(340deg);opacity:.85}}
-.smokePlume{position:absolute;left:50%;top:48%;transform:translateX(-50%);z-index:4;pointer-events:none;width:60px;height:70px;overflow:visible}
+.smokePlume{position:absolute;left:50%;top:26%;transform:translateX(-50%);z-index:4;pointer-events:none;width:60px;height:70px;overflow:visible}
 .smokePlume i{position:absolute;bottom:0;left:50%;width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,.55);filter:blur(4px);animation:rise 5s ease-in infinite}
 .smokePlume i:nth-child(2){animation-delay:1.6s;left:44%}
 .smokePlume i:nth-child(3){animation-delay:3.1s;left:56%}
 @keyframes rise{0%{transform:translate(0,0) scale(.7);opacity:0}25%{opacity:.8}100%{transform:translate(-14px,-64px) scale(2.1);opacity:0}}
-.monk{position:absolute;left:3%;bottom:38%;z-index:6;width:56px;text-align:center;pointer-events:none}
+.monk{position:absolute;left:4%;top:33%;z-index:6;width:56px;text-align:center;pointer-events:none}
 .monk .mfig{font-size:30px;line-height:1;filter:drop-shadow(0 2px 3px rgba(0,0,0,.5))}
 .monk .mo{font-size:22px;display:inline-block;transform-origin:50% 100%}
 .monk .arm{position:absolute;top:6px;right:6px;font-size:15px;transform-origin:100% 100%}
@@ -81,7 +79,7 @@ button.small{padding:7px 12px;font-size:13px}
 @keyframes tap{0%{transform:rotate(0)}40%{transform:rotate(-38deg)}100%{transform:rotate(0)}}
 @keyframes moHit{0%,100%{transform:scale(1)}40%{transform:scale(.88)}}
 .monk small{display:block;color:#fff;font-size:10px;text-shadow:0 1px 3px #000}
-.monk2{left:auto;right:3%;bottom:23%}
+.monk2{left:auto;right:4%;top:33%}
 .breath{position:absolute;left:50%;bottom:16%;transform:translateX(-50%);z-index:9;background:rgba(255,255,255,.94);color:#5a2f1d;font-family:Georgia,serif;font-size:17px;padding:6px 18px;border-radius:999px;box-shadow:0 2px 8px rgba(0,0,0,.3);display:none;white-space:nowrap}
 .breath.show{display:block}
 .giftScroll{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:30;width:76%;background:linear-gradient(180deg,#7a1f14,#9c2f1c);border:3px solid #e8c46a;border-radius:12px;color:#ffe9a8;text-align:center;padding:16px 14px;box-shadow:0 8px 30px rgba(0,0,0,.55);display:none}
@@ -90,7 +88,7 @@ button.small{padding:7px 12px;font-size:13px}
 .giftScroll p{margin:5px 0;font-size:14px;line-height:1.5}
 @keyframes pop{from{transform:translate(-50%,-50%) scale(.85);opacity:0}to{transform:translate(-50%,-50%) scale(1);opacity:1}}
 .giftLabel{position:absolute;left:50%;bottom:1.5%;transform:translateX(-50%);z-index:8;background:rgba(30,20,12,.8);color:#ffe9a8;font-size:11px;padding:3px 10px;border-radius:999px;white-space:nowrap;max-width:92%;overflow:hidden;text-overflow:ellipsis}
-.dedication{position:absolute;left:50%;top:22%;transform:translateX(-50%);z-index:29;width:86%;background:linear-gradient(180deg,#6d1a10,#8a2415);border:2px solid #e8c46a;border-radius:10px;color:#ffe9a8;text-align:center;padding:10px 14px;font-family:Georgia,serif;font-size:clamp(13px,2.4vw,19px);line-height:1.5;box-shadow:0 6px 20px rgba(0,0,0,.5);display:none}
+.dedication{position:absolute;left:50%;top:42%;transform:translateX(-50%);z-index:29;width:86%;background:linear-gradient(180deg,#6d1a10,#8a2415);border:2px solid #e8c46a;border-radius:10px;color:#ffe9a8;text-align:center;padding:10px 14px;font-family:Georgia,serif;font-size:clamp(13px,2.4vw,19px);line-height:1.5;box-shadow:0 6px 20px rgba(0,0,0,.5);display:none}
 .dedication.show{display:block;animation:dedIn .35s ease}
 @keyframes dedIn{from{opacity:0;transform:translateX(-50%) translateY(-6px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 .actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:12px}
@@ -205,7 +203,6 @@ footer{text-align:center;color:#7a6a52;font-size:13px;padding:26px 10px;line-hei
 <div class="hallTitle"><b>✦ Cầu Bình An ✦</b><small id="hallSub">Khách trên live TikTok bình luận để vào lễ Phật cùng mọi người</small></div>
 <div class="donateBox" id="donateBox" role="button" aria-label="Mở hòm công đức để xem mã QR">🧧<br><b>Hòm Công Đức</b>Ấn để mở mã QR</div>
 <div class="aisle" id="aisle" title="Chạm vào lối đi để đi dạo"></div>
-<div id="seats"></div>
 <div class="smokePlume" id="smokePlume"><i></i><i></i><i></i></div>
 <div class="bell" id="bellEl" title="Thỉnh chuông"><span class="b">🔔</span><small>Chuông chùa</small></div>
 <div class="monk" id="monkEl"><div class="mfig">🧘<span class="arm">🥢</span></div><div class="mo">🪵</div><small>Thầy gõ mõ</small></div>
@@ -225,6 +222,7 @@ footer{text-align:center;color:#7a6a52;font-size:13px;padding:26px 10px;line-hei
 <button id="knockBtn">🪵 Gõ Mõ<span class="badge" id="knockCount" style="display:none">0</span></button>
 <button id="musicToggleBtn">🎵 Nhạc thiền: Bật</button>
 <button id="voiceToggleBtn" class="ghost" style="background:#f3e6c8;color:#6b4423">🔊 Đọc tên: Bật</button>
+<select id="voiceSelect" title="Chọn giọng đọc tiếng Việt — nếu không thấy giọng tiếng Việt, cài thêm gói giọng nói tiếng Việt trong Settings của Windows rồi mở lại trang" style="max-width:180px;padding:7px 6px;border-radius:8px;border:1px solid #c9a86a;background:#fff;color:#5a2f1d;font-size:12px"></select>
 </div>
 <div class="musicRow">
 <label for="musicStyle" style="margin:0">Chọn kiểu nhạc nền</label>
@@ -243,7 +241,7 @@ footer{text-align:center;color:#7a6a52;font-size:13px;padding:26px 10px;line-hei
 <p class="muted" id="musicNote" style="margin-top:8px"></p>
 <div class="log" id="activityLog">Chào mừng bạn đến chùa 🙏 Hãy đặt tên ở cổng vào rồi bấm “Vào Chùa Với Tên Này”.</div>
 <div class="guide" style="margin-top:12px">
-<b>Đi dạo:</b> chạm / nhấp vào lối đi giữa điện, hoặc dùng phím mũi tên. <b>Đệm thiền:</b> các bồ đoàn tròn trên tọa cụ, chia hai dãy trái — phải, bốn hàng trong khu lễ rộng trước bàn thờ; chạm vào một đệm trống để tới ngồi thiền. <b>Dâng hương:</b> bước tới trước lư hương, nâng hương và khói bay lên bàn thờ. <b>Vái lạy:</b> quỳ xuống, cúi mình lạy ba lạy trước Phật. <b>Tọa thiền:</b> bước tới đệm thiền trống gần nhất, ngồi yên tỏa hào quang vàng. <b>Thỉnh chuông:</b> tiếng chuông vang cho mọi người đang ở chùa. <b>Gõ mõ:</b> chạm nút Gõ Mõ, thầy sẽ gõ mõ cùng bạn.
+<b>Đi dạo:</b> chạm / nhấp vào lối đi giữa điện, hoặc dùng phím mũi tên. <b>Phật tử:</b> khi vào chùa, hình Phật tử nam/nữ của bạn tự hiện và xếp vào chỗ trống hai bên thảm đỏ, mặt hướng về bàn thờ; chạm vào nền để đi lại. <b>Dâng hương:</b> bước tới trước lư hương, nâng hương và khói bay lên bàn thờ. <b>Vái lạy:</b> quỳ xuống, cúi mình lạy ba lạy trước Phật. <b>Tọa thiền:</b> ngồi yên tại chỗ, tỏa hào quang vàng. <b>Thỉnh chuông:</b> tiếng chuông vang cho mọi người đang ở chùa. <b>Gõ mõ:</b> chạm nút Gõ Mõ, thầy sẽ gõ mõ cùng bạn.
 </div>
 </section>
 
@@ -368,34 +366,38 @@ const CHI = ["Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi", 
 const profile = { name: "Bạn", gender: "nam" };
 let entered = false, socket = null, connected = false;
 const users = new Map();
-let myPos = { x: 50, y: 88 }, mySeat = null, meditating = false, meditateStart = 0, medInterval = null;
+let myPos = { x: 50, y: 88 }, mySpot = null, meditating = false, meditateStart = 0, medInterval = null;
 let knockTotal = 0, chatUnread = 0, chatOpen = false;
-const SEAT_COLS = [11, 22, 32, 68, 78, 89];
-const SEAT_ROWS = [70, 78, 86, 93];
-const SEATS = [];
-SEAT_COLS.forEach((x) => SEAT_ROWS.forEach((y) => SEATS.push({ x, y })));
+// Vị trí đứng lễ trong chánh điện (không còn thảm đỏ): 4 cột x 5 hàng, chừa khoảng trống trước bàn thờ.
+const SPOT_COLS = [14, 33, 67, 86];
+const SPOT_ROWS = [60, 69, 78, 87, 95];
+const SPOTS = [];
+SPOT_COLS.forEach((x) => SPOT_ROWS.forEach((y) => SPOTS.push({ x, y })));
 
-/* ============ Chánh điện: đệm + nhân vật ============ */
-function buildSeats() {
-  const wrap = $("seats");
-  SEATS.forEach((s, i) => {
-    const d = document.createElement("div");
-    d.className = "seat"; d.dataset.i = i;
-    d.style.left = s.x + "%"; d.style.top = s.y + "%";
-    d.title = "Đệm thiền trống — chạm để ngồi thiền";
-    d.addEventListener("click", (e) => { e.stopPropagation(); sitOnSeat(i); });
-    wrap.appendChild(d);
-  });
-}
-function seatTaken(i) {
-  if (mySeat === i) return true;
-  for (const u of users.values()) if (u.seat === i) return true;
+/* ============ Chánh điện: vị trí đứng lễ + nhân vật ============ */
+function spotTaken(i) {
+  if (mySpot === i) return true;
+  for (const u of users.values()) if (u.spot === i) return true;
   return false;
 }
-function refreshSeats() {
-  document.querySelectorAll(".seat").forEach((el) => {
-    el.classList.toggle("taken", seatTaken(Number(el.dataset.i)));
-  });
+// Chỗ trống đầu tiên, ưu tiên hàng trước (gần bàn thờ) rồi mới xuống hàng sau.
+function firstFreeSpot() {
+  for (const y of SPOT_ROWS) {
+    for (const x of SPOT_COLS) {
+      const i = SPOTS.findIndex((s) => s.x === x && s.y === y);
+      if (i >= 0 && !spotTaken(i)) return i;
+    }
+  }
+  return -1;
+}
+// Người mới vào tự xếp vào chỗ trống, hiện hình Phật tử nam/nữ đứng lễ hướng về bàn thờ.
+function autoPlaceMe() {
+  if (!entered || mySpot != null || meditating) return;
+  const i = firstFreeSpot();
+  if (i < 0) return;
+  mySpot = i; myPos = { x: SPOTS[i].x, y: SPOTS[i].y };
+  renderMe("đang lễ Phật");
+  emitMove("đang lễ Phật");
 }
 function charFigure(u) {
   const female = u.gender === "nu";
@@ -407,7 +409,7 @@ function renderChars() {
   const wrap = $("chars");
   const seen = new Set();
   const all = new Map(users);
-  all.set("me", { id: "me", name: profile.name, gender: profile.gender, x: myPos.x, y: myPos.y, action: meditating ? "đang tọa thiền" : (mySeat != null ? "đang tọa thiền" : currentAction), meditating: meditating, seat: mySeat });
+  all.set("me", { id: "me", name: profile.name, gender: profile.gender, x: myPos.x, y: myPos.y, action: meditating ? "đang tọa thiền" : currentAction, meditating: meditating, spot: mySpot });
   for (const [id, u] of all) {
     seen.add(id);
     let el = wrap.querySelector('[data-char="' + id + '"]');
@@ -425,7 +427,6 @@ function renderChars() {
     if (el._html !== html) { el.innerHTML = html; el._html = html; }
   }
   wrap.querySelectorAll(".char").forEach((el) => { if (!seen.has(el.dataset.char)) el.remove(); });
-  refreshSeats();
 }
 let currentAction = "đang đứng";
 function renderMe(action) {
@@ -442,28 +443,14 @@ function showBubble(id, text) {
   setTimeout(() => b.remove(), 6000);
 }
 function emitMove(action) {
-  if (socket && connected) socket.emit("move", { x: myPos.x, y: myPos.y, action: action || currentAction, meditating });
+  if (socket && connected) socket.emit("move", { x: myPos.x, y: myPos.y, action: action || currentAction, meditating, spot: mySpot });
 }
 function moveTo(x, y, action) {
-  mySeat = null;
+  mySpot = null;
   if (meditating) stopMeditate(true);
-  myPos = { x: Math.max(4, Math.min(96, x)), y: Math.max(66, Math.min(95, y)) };
+  myPos = { x: Math.max(4, Math.min(96, x)), y: Math.max(46, Math.min(96, y)) };
   renderMe(action || "đang đi dạo");
   emitMove();
-}
-function sitOnSeat(i) {
-  if (seatTaken(i)) return;
-  mySeat = i; myPos = { x: SEATS[i].x, y: SEATS[i].y };
-  startMeditate();
-}
-function nearestFreeSeat() {
-  let best = -1, bd = 1e9;
-  SEATS.forEach((s, i) => {
-    if (seatTaken(i)) return;
-    const d = (s.x - myPos.x) ** 2 + (s.y - myPos.y) ** 2;
-    if (d < bd) { bd = d; best = i; }
-  });
-  return best;
 }
 function fmtTime(sec) {
   const m = String(Math.floor(sec / 60)).padStart(2, "0"), s = String(sec % 60).padStart(2, "0");
@@ -478,7 +465,7 @@ function startMeditate() {
     $("medTimer").textContent = "Đã thiền " + fmtTime(Math.floor((Date.now() - meditateStart) / 1000));
   }, 1000);
   renderMe("đang tọa thiền");
-  if (socket && connected) socket.emit("meditate", { meditating: true });
+  if (socket && connected) socket.emit("meditate", { meditating: true, spot: mySpot });
   logActivity("Đang tọa thiền trên đệm: ngồi yên trên bồ đoàn, nghe nhạc thiền — tâm an, thân an.");
 }
 function stopMeditate(silent) {
@@ -489,19 +476,17 @@ function stopMeditate(silent) {
   $("medTimer").textContent = "Đã thiền 00:00";
   if (!silent) {
     renderMe("đang đứng");
-    if (socket && connected) socket.emit("meditate", { meditating: false });
+    if (socket && connected) socket.emit("meditate", { meditating: false, spot: mySpot });
     emitMove("đang đứng");
   }
 }
 $("meditateBtn").addEventListener("click", () => {
   if (meditating) { stopMeditate(); return; }
-  const i = nearestFreeSeat();
-  if (i >= 0) { mySeat = i; myPos = { x: SEATS[i].x, y: SEATS[i].y }; }
   startMeditate();
 });
 $("incenseBtn").addEventListener("click", () => {
-  mySeat = null; if (meditating) stopMeditate(true);
-  myPos = { x: 50, y: 70 };
+  mySpot = null; if (meditating) stopMeditate(true);
+  myPos = { x: 50, y: 50 };
   renderMe("đang dâng hương");
   if (socket && connected) socket.emit("offer_incense");
   emitMove("đang dâng hương");
@@ -509,8 +494,8 @@ $("incenseBtn").addEventListener("click", () => {
   setTimeout(() => renderMe("đang đứng"), 6000);
 });
 $("bowBtn").addEventListener("click", () => {
-  mySeat = null; if (meditating) stopMeditate(true);
-  myPos = { x: 50, y: 72 };
+  mySpot = null; if (meditating) stopMeditate(true);
+  myPos = { x: 50, y: 54 };
   renderMe("đang vái lạy");
   if (socket && connected) socket.emit("bow");
   emitMove("đang vái lạy");
@@ -533,7 +518,7 @@ $("aisle").addEventListener("click", (e) => {
   moveTo(x, y, "đang đi dạo");
 });
 $("hall").addEventListener("click", (e) => {
-  if (e.target.closest(".seat,.bell,.donateBox,.monk,.giftScroll")) return;
+  if (e.target.closest(".bell,.donateBox,.monk,.giftScroll")) return;
   const r = $("hall").getBoundingClientRect();
   moveTo(((e.clientX - r.left) / r.width) * 100, ((e.clientY - r.top) / r.height) * 100, "đang đi dạo");
 });
@@ -559,6 +544,8 @@ $("enterBtn").addEventListener("click", () => {
     socket.emit("set_profile", { name: profile.name, gender: profile.gender });
     emitMove("đang đứng");
   }
+  // Người mới vào tự xếp vào chỗ trống trong chánh điện.
+  setTimeout(autoPlaceMe, 700);
   const desc = profile.gender === "nu" ? "áo lam hồng tím, tóc dài búi cao cài hoa sen, dáng áo xòe như váy dài" : "áo lam xám xanh, tóc ngắn, dáng áo thẳng";
   logActivity("Đã vào chùa với tên “" + esc(name) + "” — Phật tử " + (profile.gender === "nu" ? "nữ" : "nam") + ": bảng tên “" + esc(label) + "” đã hiện trên đầu nhân vật của bạn (" + desc + ").");
   startAudioOnGesture();
@@ -593,17 +580,17 @@ function connectSocket() {
   });
   socket.on("current_users", (list) => {
     users.clear();
-    (list || []).forEach((u) => { if (u.id !== socket.id) users.set(u.id, { ...u, seat: null }); });
+    (list || []).forEach((u) => { if (u.id !== socket.id) users.set(u.id, { ...u, spot: u.spot == null ? null : u.spot }); });
     renderChars();
   });
   socket.on("new_user", (u) => {
     if (!u) return;
     const named = u.name && u.name !== "Bạn";
     speakText(named
-      ? "Chào mừng " + u.name + " đã đến chùa Thanh Tịnh. Chúc " + u.name + " thân tâm an lạc, vạn sự bình an."
-      : "Chào mừng Phật tử mới đã đến chùa Thanh Tịnh. Chúc quý Phật tử thân tâm an lạc, vạn sự bình an.");
+      ? "Chào mừng " + u.name + " quang lâm chùa Thanh Tịnh. Kính chúc " + u.name + " thân tâm an lạc, vạn sự hanh thông, gia đạo bình an."
+      : "Chào mừng quý Phật tử quang lâm chùa Thanh Tịnh. Kính chúc quý Phật tử thân tâm an lạc, vạn sự hanh thông.");
     if (u.id === socket.id) return;
-    users.set(u.id, { ...u, seat: null });
+    users.set(u.id, { ...u, spot: u.spot == null ? null : u.spot });
     addChatSys((u.gender === "nu" ? "♀ " : "♂ ") + u.name + " — Phật tử " + (u.gender === "nu" ? "nữ" : "nam") + " vừa vào chùa.");
     logActivity((u.gender === "nu" ? "♀ " : "♂ ") + esc(u.name) + " vừa vào chùa.");
     renderChars();
@@ -612,18 +599,18 @@ function connectSocket() {
     if (!d || !d.name) return;
     addChatSys("👋 " + d.name + " vừa vào xem live TikTok.");
     logActivity("👋 " + esc(d.name) + " vừa vào xem live TikTok.");
-    speakText("Chào mừng " + d.name + " vừa vào xem live. Chúc " + d.name + " thân tâm an lạc, vạn sự bình an.");
+    speakText("Chào mừng " + d.name + " vừa vào xem live. Kính chúc " + d.name + " thân tâm an lạc, gia đạo bình an.");
   });
   socket.on("user_moved", (u) => {
     if (!u || u.id === socket.id) return;
     const prev = users.get(u.id) || {};
-    users.set(u.id, { ...prev, ...u, seat: prev.seat });
+    users.set(u.id, { ...prev, ...u, spot: u.spot === undefined ? prev.spot : u.spot });
     renderChars();
   });
   socket.on("user_meditate", (u) => {
     if (!u || u.id === socket.id) return;
     const prev = users.get(u.id) || {};
-    users.set(u.id, { ...prev, ...u, seat: prev.seat });
+    users.set(u.id, { ...prev, ...u, spot: u.spot === undefined ? prev.spot : u.spot });
     renderChars();
   });
   socket.on("user_left", (d) => {
@@ -841,11 +828,62 @@ setInterval(() => {
 let voiceOn = true;
 const speakQueue = [];
 let speaking = false;
-function pickViVoice() {
-  try {
-    const vs = window.speechSynthesis.getVoices();
-    return vs.find((v) => v.lang && v.lang.toLowerCase().startsWith("vi")) || null;
-  } catch (e) { return null; }
+let voiceChoice = "";
+try { voiceChoice = localStorage.getItem("chua_voice") || ""; } catch (e) {}
+function allVoices() {
+  try { return window.speechSynthesis.getVoices() || []; } catch (e) { return []; }
+}
+// Ưu tiên giọng tiếng Việt chuẩn, giọng Google trước rồi mới tới giọng hệ thống.
+function rankVoice(v) {
+  const lang = String(v.lang || "").toLowerCase();
+  const name = String(v.name || "").toLowerCase();
+  if (lang === "vi-vn" && name.indexOf("google") >= 0) return 0;
+  if (lang.indexOf("vi") === 0 && name.indexOf("google") >= 0) return 1;
+  if (lang === "vi-vn") return 2;
+  if (lang.indexOf("vi") === 0) return 3;
+  if (name.indexOf("viet") >= 0) return 4;
+  return 5;
+}
+function bestViVoice() {
+  const vs = allVoices().filter((v) => v.lang && v.lang.toLowerCase().indexOf("vi") === 0);
+  vs.sort((a, b) => rankVoice(a) - rankVoice(b));
+  return vs[0] || null;
+}
+function chosenVoice() {
+  const vs = allVoices();
+  if (voiceChoice) {
+    const f = vs.find((v) => v.name === voiceChoice);
+    if (f) return f;
+  }
+  return bestViVoice();
+}
+function populateVoiceSelect() {
+  const sel = $("voiceSelect");
+  if (!sel || !("speechSynthesis" in window)) return;
+  const vs = allVoices().slice().sort((a, b) => rankVoice(a) - rankVoice(b));
+  sel.innerHTML = "";
+  if (!vs.length) {
+    const o = document.createElement("option");
+    o.textContent = "Chưa có giọng đọc trên máy này";
+    sel.appendChild(o);
+    return;
+  }
+  const hasVi = vs.some((v) => v.lang && v.lang.toLowerCase().indexOf("vi") === 0);
+  if (!hasVi) {
+    const o = document.createElement("option");
+    o.disabled = true;
+    o.textContent = "⚠️ Máy này chưa có giọng tiếng Việt — cần cài thêm (xem hướng dẫn trong khung chat)";
+    sel.appendChild(o);
+  }
+  vs.forEach((v) => {
+    const o = document.createElement("option");
+    o.value = v.name;
+    const isVi = v.lang && v.lang.toLowerCase().indexOf("vi") === 0;
+    o.textContent = (isVi ? "🇻🇳 " : "") + v.name + " (" + v.lang + ")";
+    sel.appendChild(o);
+  });
+  const cv = chosenVoice();
+  if (cv) sel.value = cv.name;
 }
 function speakText(text) {
   if (!voiceOn || !("speechSynthesis" in window)) return;
@@ -860,9 +898,9 @@ function speakNext() {
   try {
     const u = new SpeechSynthesisUtterance(text);
     u.lang = "vi-VN";
-    const v = pickViVoice();
+    const v = chosenVoice();
     if (v) u.voice = v;
-    u.rate = 0.95; u.pitch = 1;
+    u.rate = 0.92; u.pitch = 1;
     u.onend = () => { speaking = false; setTimeout(speakNext, 300); };
     u.onerror = () => { speaking = false; setTimeout(speakNext, 300); };
     window.speechSynthesis.speak(u);
@@ -876,6 +914,21 @@ $("voiceToggleBtn").addEventListener("click", () => {
     speakQueue.length = 0; speaking = false;
   }
 });
+const voiceSel = $("voiceSelect");
+if (voiceSel) {
+  voiceSel.addEventListener("change", () => {
+    voiceChoice = voiceSel.value;
+    try { localStorage.setItem("chua_voice", voiceChoice); } catch (e) {}
+    try { window.speechSynthesis.cancel(); } catch (e) {}
+    speakQueue.length = 0; speaking = false;
+    speakText("Chào mừng quý Phật tử quang lâm chùa Thanh Tịnh. Kính chúc quý vị thân tâm an lạc, vạn sự hanh thông.");
+  });
+}
+populateVoiceSelect();
+if ("speechSynthesis" in window) {
+  window.speechSynthesis.onvoiceschanged = populateVoiceSelect;
+  setTimeout(populateVoiceSelect, 1200);
+}
 /* ============ Quà TikTok + Bia Công Đức ============ */
 const BLESSINGS = [
   "Nguyện chúc {name} thân tâm an lạc, vạn sự hanh thông, phúc lộc đầy nhà!",
@@ -1323,7 +1376,6 @@ $("lunarBtn").addEventListener("click", () => {
   $("lunarOut").textContent = "Ngày " + d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " dương lịch là " + lunarText(d.getDate(), d.getMonth() + 1, d.getFullYear()) + ".";
 });
 /* ============ Khởi tạo ============ */
-buildSeats();
 renderChars();
 spawnPetals();
 $("serverUrl").value = window.location.origin;

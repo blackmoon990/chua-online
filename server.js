@@ -27,7 +27,7 @@ app.get("/hall-bg.jpg", (req, res) => {
   res.sendFile(path.join(__dirname, "hall-bg.jpg"));
 });
 
-const users = new Map(); // socketId -> { id, name, gender, x, y, action, meditating }
+const users = new Map(); // socketId -> { id, name, gender, x, y, action, meditating, spot }
 const meritBoard = new Map(); // name -> points
 
 function meritEntries() {
@@ -66,6 +66,7 @@ function publicUser(u) {
     y: u.y,
     action: u.action,
     meditating: !!u.meditating,
+    spot: u.spot == null ? null : u.spot,
   };
 }
 function broadcastCount() {
@@ -130,6 +131,7 @@ io.on("connection", (socket) => {
       y: prev ? prev.y : 78,
       action: prev ? prev.action : "đang đứng",
       meditating: prev ? prev.meditating : false,
+      spot: prev ? prev.spot : null,
     };
     users.set(socket.id, user);
     // Báo cho cả chùa (kể cả người vừa vào) có Phật tử mới.
@@ -145,6 +147,8 @@ io.on("connection", (socket) => {
     user.y = clampPos(d.y, user.y);
     if (typeof d.action === "string") user.action = d.action.slice(0, 40);
     if (typeof d.meditating === "boolean") user.meditating = d.meditating;
+    if (d.spot === null) user.spot = null;
+    else if (Number.isInteger(d.spot) && d.spot >= 0 && d.spot < 100) user.spot = d.spot;
     socket.broadcast.emit("user_moved", publicUser(user));
   });
 
@@ -152,6 +156,8 @@ io.on("connection", (socket) => {
     const user = users.get(socket.id);
     if (!user) return;
     user.meditating = !!(data && data.meditating);
+    if (data && data.spot === null) user.spot = null;
+    else if (data && Number.isInteger(data.spot) && data.spot >= 0 && data.spot < 100) user.spot = data.spot;
     user.action = user.meditating ? "đang tọa thiền" : "đang đứng";
     io.emit("user_meditate", publicUser(user));
     socket.broadcast.emit("user_moved", publicUser(user));
