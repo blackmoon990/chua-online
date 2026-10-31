@@ -43,6 +43,18 @@ button.small{padding:7px 12px;font-size:13px}
 .char.meditating .halo{display:block}
 .bgfig{position:absolute;transform:translate(-50%,-100%);z-index:3;opacity:.85;pointer-events:none}
 .bgfig svg{width:34px;height:48px;display:block}
+.bgmove{position:absolute;transform:translate(-50%,-100%);transform-origin:50% 100%;z-index:4;opacity:.92;pointer-events:none}
+.bgmove svg{width:34px;height:48px;display:block}
+.bgmove.bow{animation:bgBow 6s ease-in-out infinite}
+.bgmove.sway{animation:bgSway 5s ease-in-out infinite}
+.bgmove.walk{animation:bgWalk 9s ease-in-out infinite}
+.bgmove.tray{animation:bgTray 46s ease-in-out infinite}
+.bgmove.tray svg{animation:bgBob 2.4s ease-in-out infinite}
+@keyframes bgBow{0%,58%,100%{transform:translate(-50%,-100%) scaleY(1)}28%{transform:translate(-50%,calc(-100% + 4px)) scaleY(.85)}}
+@keyframes bgSway{0%,100%{transform:translate(-50%,-100%) rotate(-1.6deg)}50%{transform:translate(-50%,-100%) rotate(1.6deg)}}
+@keyframes bgWalk{0%,100%{transform:translate(calc(-50% - 22px),-100%)}50%{transform:translate(calc(-50% + 22px),calc(-100% - 2px))}}
+@keyframes bgBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+@keyframes bgTray{0%{left:9%}50%{left:87%}100%{left:9%}}
 .char.bowing .fig{transform:rotate(10deg) scaleY(.92)}
 .speech{position:absolute;left:50%;bottom:calc(100% + 2px);transform:translateX(-50%);background:#fff;color:#333;font-size:11px;line-height:1.3;padding:4px 8px;border-radius:10px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.35);z-index:8}
 .speech::after{content:"";position:absolute;left:50%;bottom:-4px;transform:translateX(-50%);border:5px solid transparent;border-top-color:#fff;border-bottom:0}
@@ -202,6 +214,7 @@ footer{text-align:center;color:#7a6a52;font-size:13px;padding:26px 10px;line-hei
 <div class="monk" id="monkEl"><div class="mfig">🧘<span class="arm">🥢</span></div><div class="mo">🪵</div><small>Thầy gõ mõ</small></div>
 <div class="monk monk2"><div class="mfig">🧘</div><small>Thầy tọa thiền</small></div>
 <div class="merit" id="meritBoard"><b>BIA CÔNG ĐỨC</b><div id="meritRows">Chưa có công đức — tặng quà trên live TikTok để ghi danh.</div></div>
+<div id="bgMovers" aria-hidden="true"></div>
 <div id="chars"></div>
 <div class="breath" id="breathBubble">Hít vào…</div>
 <div class="giftScroll" id="giftScroll"></div>
@@ -236,7 +249,7 @@ footer{text-align:center;color:#7a6a52;font-size:13px;padding:26px 10px;line-hei
 <p class="muted" id="musicNote" style="margin-top:8px"></p>
 <div class="log" id="activityLog">Chào mừng bạn đến chùa 🙏 Hãy đặt tên ở cổng vào rồi bấm “Vào Chùa Với Tên Này”.</div>
 <div class="guide" style="margin-top:12px">
-<b>Đi dạo:</b> chạm / nhấp vào lối đi giữa điện, hoặc dùng phím mũi tên. <b>Phật tử:</b> khi vào chùa, hình Phật tử nam/nữ của bạn tự hiện và xếp vào chỗ trống hai bên thảm đỏ, mặt hướng về bàn thờ; chạm vào nền để đi lại. <b>Dâng hương:</b> bước tới trước lư hương, nâng hương và khói bay lên bàn thờ. <b>Vái lạy:</b> quỳ xuống, cúi mình lạy ba lạy trước Phật. <b>Tọa thiền:</b> ngồi yên tại chỗ, tỏa hào quang vàng. <b>Thỉnh chuông:</b> tiếng chuông vang cho mọi người đang ở chùa. <b>Gõ mõ:</b> chạm nút Gõ Mõ, thầy sẽ gõ mõ cùng bạn.
+<b>Đi dạo:</b> chạm / nhấp vào lối đi giữa điện, hoặc dùng phím mũi tên. <b>Phật tử:</b> khi vào chùa, hình Phật tử nam/nữ của bạn tự hiện và xếp vào chỗ trống hai bên thảm đỏ, mặt hướng về bàn thờ; chạm vào nền để đi lại. Các Phật tử trong điện luôn chuyển động: người khấn vái, người đi lại, người đứng chắp tay lễ, người bưng mâm lễ. <b>Dâng hương:</b> bước tới trước lư hương, nâng hương và khói bay lên bàn thờ. <b>Vái lạy:</b> quỳ xuống, cúi mình lạy ba lạy trước Phật. <b>Tọa thiền:</b> ngồi yên tại chỗ, tỏa hào quang vàng. <b>Thỉnh chuông:</b> tiếng chuông vang cho mọi người đang ở chùa. <b>Gõ mõ:</b> chạm nút Gõ Mõ, thầy sẽ gõ mõ cùng bạn.
 </div>
 </section>
 
@@ -395,36 +408,72 @@ function autoPlaceMe() {
   emitMove("đang lễ Phật");
 }
 function figureSVG(female, seated) {
-  const robe = female ? "#b07fa8" : "#7d94a8";
-  const trim = female ? "#8e5f86" : "#5f768a";
+  const robe = female ? "#a89bb8" : "#7d94a8";
+  const trim = female ? "#8a7d9e" : "#5f768a";
   const skin = "#f2c89b";
   const hair = "#2b2b2b";
+  const folds = '<path d="M26,40 Q24,58 26,76 M38,40 Q40,58 38,76" stroke="' + trim + '" stroke-width="1" fill="none" opacity="0.3"/>' +
+    '<path d="M32,36 L32,78" stroke="' + trim + '" stroke-width="1" opacity="0.25"/>';
+  const collar = '<path d="M26,32 Q32,29 38,32 L38,37 Q32,34 26,37 Z" fill="' + trim + '"/>';
   const body = seated
-    ? '<path d="M12,78 Q12,58 24,50 L40,50 Q52,58 52,78 Q32,84 12,78 Z" fill="' + robe + '"/>' +
-      '<path d="M22,50 Q32,44 42,50 L42,58 L22,58 Z" fill="' + robe + '"/>' +
-      '<path d="M27,50 L32,57 L37,50" stroke="' + trim + '" stroke-width="2" fill="none" stroke-linecap="round"/>' +
-      '<ellipse cx="32" cy="61" rx="7" ry="3.5" fill="' + skin + '"/>'
-    : '<path d="' + (female ? "M18,38 Q32,32 46,38 L52,78 Q32,84 12,78 Z" : "M20,38 Q32,32 44,38 L48,78 Q32,83 16,78 Z") + '" fill="' + robe + '"/>' +
-      '<path d="M25,36 L32,48 L39,36" stroke="' + trim + '" stroke-width="2" fill="none" stroke-linecap="round"/>' +
-      '<path d="M24,39 L42,74" stroke="#e8c46a" stroke-width="3" opacity="0.75" stroke-linecap="round"/>' +
-      '<path d="M21,43 Q28,53 32,55 Q36,53 43,43" stroke="' + trim + '" stroke-width="6" fill="none" stroke-linecap="round"/>' +
-      '<ellipse cx="32" cy="56" rx="5" ry="4" fill="' + skin + '"/>';
-  const headBase = '<circle cx="32" cy="22" r="11" fill="' + skin + '"/>' +
-    '<circle cx="21" cy="23" r="2.4" fill="' + skin + '"/><circle cx="43" cy="23" r="2.4" fill="' + skin + '"/>';
-  const hairTop = female
-    ? '<path d="M20,24 Q18,8 32,8 Q46,8 44,24 L42,40 Q40,30 38,26 L38,15 Q32,11 26,15 L26,26 Q24,30 22,40 Z" fill="' + hair + '"/>' +
-      '<circle cx="32" cy="6" r="5" fill="' + hair + '"/>' +
-      '<circle cx="32" cy="1" r="2" fill="#e89bb0"/><circle cx="27.5" cy="4" r="2" fill="#e89bb0"/><circle cx="36.5" cy="4" r="2" fill="#e89bb0"/><circle cx="29" cy="9" r="2" fill="#e89bb0"/><circle cx="35" cy="9" r="2" fill="#e89bb0"/><circle cx="32" cy="5" r="1.6" fill="#f5d76e"/>'
-    : '<path d="M20,24 Q19,9 32,9 Q45,9 44,24 Q42,15 32,14 Q22,15 20,24 Z" fill="' + hair + '"/>';
-  const face = '<circle cx="28" cy="21" r="1.3" fill="#3a2a20"/><circle cx="36" cy="21" r="1.3" fill="#3a2a20"/>' +
-    '<path d="M28,27 Q32,30 36,27" stroke="#b0725a" stroke-width="1.4" fill="none" stroke-linecap="round"/>';
+    ? '<path d="M11,79 Q11,58 24,49 L40,49 Q53,58 53,79 Q32,84 11,79 Z" fill="' + robe + '"/>' +
+      '<path d="M24,28 Q32,23 40,28 L43,52 L21,52 Z" fill="' + robe + '"/>' +
+      '<path d="M24,58 Q22,68 24,77 M40,58 Q42,68 40,77" stroke="' + trim + '" stroke-width="1" fill="none" opacity="0.3"/>' + collar
+    : '<path d="' + (female ? "M22,34 Q32,29 42,34 L48,80 Q32,84 16,80 Z" : "M23,34 Q32,29 41,34 L45,80 Q32,84 19,80 Z") + '" fill="' + robe + '"/>' +
+      folds + collar +
+      '<path d="M23,40 Q26,52 31,56 M41,40 Q38,52 33,56" stroke="' + trim + '" stroke-width="5" fill="none" stroke-linecap="round"/>';
+  const headBack = '<circle cx="32" cy="19" r="10" fill="' + skin + '"/>';
+  const hairBack = female
+    ? '<circle cx="32" cy="16" r="10.5" fill="' + hair + '"/>' +
+      '<circle cx="32" cy="30" r="4.5" fill="' + hair + '"/>' +
+      '<circle cx="28" cy="27.5" r="1.7" fill="#e89bb0"/><circle cx="36" cy="27.5" r="1.7" fill="#e89bb0"/><circle cx="32" cy="25.5" r="1.7" fill="#e89bb0"/><circle cx="32" cy="28.5" r="1.4" fill="#f5d76e"/>'
+    : '<circle cx="32" cy="16" r="10.5" fill="' + hair + '"/>';
   return '<svg viewBox="0 0 64 84" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
-    '<ellipse cx="32" cy="80" rx="16" ry="3" fill="rgba(0,0,0,0.25)"/>' + body + headBase + hairTop + face + '</svg>';
+    '<ellipse cx="32" cy="81" rx="15" ry="3" fill="rgba(0,0,0,0.25)"/>' + body + headBack + hairBack + '</svg>';
 }
 function charFigure(u) {
   const female = u.gender === "nu";
   return '<div class="halo"></div><span class="nametag">' + esc((female ? "♀ " : "♂ ") + u.name + " — Phật tử " + (female ? "nữ" : "nam") + (u.action && u.action !== "đang đứng" ? " · " + esc(u.action) : "")) + '</span>' +
     '<div class="fig">' + figureSVG(female, !!u.meditating) + '</div>';
+}
+// Hình Phật tử nhìn từ phía sau (cùng hướng với các Phật tử trong ảnh nền): tóc, lưng áo, không thấy mặt.
+function figureSVGBack(female, withTray) {
+  const svg = figureSVG(female, false);
+  if (!withTray) return svg;
+  const tray = '<ellipse cx="32" cy="54" rx="18" ry="5" fill="#b08d3e"/><ellipse cx="32" cy="52.5" rx="18" ry="5" fill="#d9b45c"/>' +
+    '<circle cx="24" cy="48" r="3" fill="#e07830"/><circle cx="32" cy="46.5" r="3" fill="#c0392b"/><circle cx="40" cy="48" r="3" fill="#7da05a"/>' +
+    '<path d="M28,46 L28,40 M36,46 L36,40" stroke="#8a6a2f" stroke-width="1.6"/>';
+  return svg.replace('</svg>', tray + '</svg>');
+}
+
+// Phật tử chuyển động trong điện: người khấn vái, người đi lại, người đứng chắp tay, người bưng mâm lễ.
+const BG_MOVERS = [
+  { x: 8, y: 56, female: true, act: "bow", dur: 6 },
+  { x: 22, y: 66, female: false, act: "walk", dur: 9 },
+  { x: 7, y: 82, female: false, act: "sway", dur: 5 },
+  { x: 26, y: 88, female: true, act: "bow", dur: 7.5 },
+  { x: 92, y: 56, female: false, act: "sway", dur: 5.5 },
+  { x: 78, y: 66, female: true, act: "walk", dur: 10 },
+  { x: 93, y: 82, female: true, act: "bow", dur: 6.8 },
+  { x: 74, y: 88, female: false, act: "sway", dur: 4.6 },
+];
+function buildBgMovers() {
+  const wrap = $("bgMovers");
+  if (!wrap) return;
+  BG_MOVERS.forEach((f, i) => {
+    const d = document.createElement("div");
+    d.className = "bgmove " + f.act;
+    d.style.left = f.x + "%"; d.style.top = f.y + "%";
+    d.style.animationDuration = f.dur + "s";
+    d.style.animationDelay = (i * 0.9) + "s";
+    d.innerHTML = figureSVGBack(f.female, false);
+    wrap.appendChild(d);
+  });
+  const t = document.createElement("div");
+  t.className = "bgmove tray";
+  t.style.left = "9%"; t.style.top = "93%";
+  t.innerHTML = figureSVGBack(false, true);
+  wrap.appendChild(t);
 }
 function renderChars() {
   const wrap = $("chars");
@@ -1402,6 +1451,7 @@ $("lunarBtn").addEventListener("click", () => {
   $("lunarOut").textContent = "Ngày " + d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " dương lịch là " + lunarText(d.getDate(), d.getMonth() + 1, d.getFullYear()) + ".";
 });
 /* ============ Khởi tạo ============ */
+buildBgMovers();
 renderChars();
 spawnPetals();
 $("serverUrl").value = window.location.origin;
